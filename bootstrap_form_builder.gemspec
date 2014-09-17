@@ -7,11 +7,11 @@ require "bootstrap_form_builder/version"
 Gem::Specification.new do |s|
   s.name        = "bootstrap_form_builder"
   s.version     = BootstrapFormBuilder::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of BootstrapFormBuilder."
-  s.description = "TODO: Description of BootstrapFormBuilder."
+  s.authors     = "Nikolay-Lipovtsev"
+  s.email       = "n.lipovtsev@gmail.com"
+  s.homepage    = "Test"
+  s.summary     = "Test"
+  s.description = "Test"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]

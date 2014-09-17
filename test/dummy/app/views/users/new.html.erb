@@ -1,0 +1,39 @@
+<h1>Simple form</h1>
+<%= bootstrap_builder_form_for @user, url: {action: "create"} do |user_f| %>
+
+        <%= user_f.text_field :name, label_text: "Text field" %>
+        <%= user_f.password_field :name, label_text: "Password field" %>
+        <%= user_f.date_field :name, label_text: "Date field" %>
+        <%= user_f.datetime_field :name, label_text: "Date time field" %>
+        <%= user_f.datetime_local_field :name, label_text: "Date time local field" %>
+        <%= user_f.month_field :name, label_text: "Month field" %>
+        <%= user_f.time_field :name, label_text: "Time field" %>
+        <%= user_f.email_field :name, label_text: "Email field" %>
+        <%= user_f.number_field :name, label_text: "Number field" %>
+        <%= user_f.phone_field :name, label_text: "Phone field" %>
+        <%= user_f.range_field :name, label_text: "Range field" %>
+        <%= user_f.search_field :name, label_text: "Search field" %>
+        <%= user_f.telephone_field :name, label_text: "Telephone field" %>
+        <%= user_f.text_area :name, label_text: "Text area" %>
+        <%= user_f.url_field :name, label_text: "Url field" %>
+        <%= user_f.week_field :name, label_text: "Week field" %>
+
+
+        <%= user_f.color_field :name, label_text: "Color field" %>
+
+
+        <%= user_f.text_area :name %>
+        <%= user_f.text_field :name, control_col: 3 %>
+        <%= user_f.control_group_label :name  %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+        <%= user_f.check_box :name, offset_control_col: 3, inline: true %>
+
+
+<% end %><!-- /form -->
