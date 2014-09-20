@@ -1,9 +1,11 @@
 require "bootstrap_form_builder/tag"
+require "bootstrap_form_builder/button"
 
 module Control
   class FormBuilder < ActionView::Helpers::FormBuilder
     include Tag
-
+    include Button
+    
     COMMON_OPTIONS = [:layout, :label_class, :label_col, :offset_label_col, :label_text, :invisible_label, :required,
                       :control_class, :control_col, :offset_control_col, :placeholder, :popover, :error_disable,
                       :row_disable, :inline, :grid_system, :disabled, :rows]

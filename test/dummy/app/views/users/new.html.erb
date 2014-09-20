@@ -1,14 +1,16 @@
 <div class="row">
 	<div class="col-md-6">
-		<h1>Basic form</h1>
+		<h1>Bootstrap form builder</h1>
+		<h2>Basic form</h2>
 		<%= bootstrap_builder_form_for @user, url: {action: "create"} do |user_f| %>
+			<%= user_f.button_test %>
 			<%= user_f.email_field :name, label_text: "Email" %>
 			<%= user_f.password_field :name, label_text: "Password" %>
 			<%= user_f.check_box :name, label_text: "Check box" %>
 			<%= user_f.submit "Sabmit" %>
 		<% end %>
 		
-		<h1>Inline form</h1>
+		<h2>Inline form</h2>
 		<%= bootstrap_builder_form_for @user, url: {action: "create"}, layout: :inline do |user_f| %>
 			<%= user_f.email_field :name, label_text: "Email" %>
 			<%= user_f.password_field :name, label_text: "Password" %>
@@ -16,7 +18,7 @@
 			<%= user_f.submit "Sabmit" %>
 		<% end %>
 		
-		<h1>Horizontal form</h1>
+		<h2>Horizontal form</h2>
 		<%= bootstrap_builder_form_for @user, url: {action: "create"}, layout: :horizontal do |user_f| %>
 			<%= user_f.email_field :name, label_text: "Email" %>
 			<%= user_f.password_field :name, label_text: "Password" %>
@@ -24,8 +26,8 @@
 			<%= user_f.submit "Sabmit" %>
 		<% end %>
 		
-		<h1>Supported controls</h1>
-		<h2>Inputs</h2>
+		<h2>Supported controls</h2>
+		<h3>Inputs</h3>
 		<%= bootstrap_builder_form_for @user, url: {action: "create"} do |user_f| %>
 			<%= user_f.color_field :name, label_text: "Color field" %>
 			<%= user_f.date_field :name, label_text: "Date field" %>
@@ -45,7 +47,8 @@
 			<%= user_f.url_field :name, label_text: "Url field" %>
 			<%= user_f.week_field :name, label_text: "Week field" %>
 		<% end %>
-		<h2>Checkboxes and radios</h2>
+		<h3>Checkboxes and radios</h3>
+		<h4>Default (stacked)</h4>
 		<%= bootstrap_builder_form_for @user, url: {action: "create"} do |user_f| %>
 			<%= user_f.check_box :name, label_text: "Check box" %>
 			<%= user_f.check_box :name, label_text: "Check box" %>
@@ -53,9 +56,18 @@
 			<%= user_f.radio_button :name, label_text: "Radio button" %>
 			<%= user_f.radio_button :name, label_text: "Radio button" %>
 		<% end %>
+		<h4>Inline checkboxes and radios</h4>
+		<%= bootstrap_builder_form_for @user, url: {action: "create"} do |user_f| %>
+			<%= user_f.check_box :name, label_text: "Check box", inline: true %>
+			<%= user_f.check_box :name, label_text: "Check box", inline: true %>
+			<%= user_f.radio_button :name, label_text: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, label_text: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, label_text: "Radio button", inline: true %>
+		<% end %>
 	</div>
 	<div class="col-md-6">
-		<h1>Basic form</h1>
+		<h1>Normal Bootstrap form</h1>
+		<h2>Basic form</h2>
 		<form role="form">
 		  <div class="form-group">
 		    <label for="exampleInputEmail1">Email</label>
@@ -73,7 +85,7 @@
 		  <button type="submit" class="btn btn-default">Submit</button>
 		</form>
 		
-		<h1>Inline form</h1>
+		<h2>Inline form</h2>
 		<form class="form-inline" role="form">
 		  <div class="form-group">
 		    <label class="sr-only" for="exampleInputEmail2">Email address</label>
@@ -97,7 +109,7 @@
 		  <button type="submit" class="btn btn-default">Submit</button>
 		</form>
 		
-		<h1>Horizontal form</h1>
+		<h2>Horizontal form</h2>
 		<form class="form-horizontal" role="form">
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
@@ -127,8 +139,8 @@
 		  </div>
 		</form>
 		
-		<h1>Supported controls</h1>
-		<h2>Inputs</h2>
+		<h2>Supported controls</h2>
+		<h3>Inputs</h3>
 		<form role="form">
 		  <div class="form-group">
 		    <label for="exampleInputColor">Color field</label>
@@ -200,37 +212,74 @@
 		  </div>
 		  
 		</form>
-		<h2>Checkboxes and radios</h2>
+		
+		<h3>Checkboxes and radios</h3>
+		<h4>Default (stacked)</h4>
 		<div class="checkbox">
 		  <label>
 		    <input type="checkbox" value="">
-		    Option one is this and that&mdash;be sure to include why it's great
+		    Check box
 		  </label>
 		</div>
 		<div class="checkbox disabled">
 		  <label>
 		    <input type="checkbox" value="" disabled>
-		    Option two is disabled
+		    Check box
 		  </label>
 		</div>
 
 		<div class="radio">
 		  <label>
 		    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-		    Option one is this and that&mdash;be sure to include why it's great
+		    Radio button
 		  </label>
 		</div>
 		<div class="radio">
 		  <label>
 		    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-		    Option two can be something else and selecting it will deselect option one
+		    Radio button
 		  </label>
 		</div>
 		<div class="radio disabled">
 		  <label>
 		    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
-		    Option three is disabled
+		    Radio button
 		  </label>
 		</div>
+		
+		<h4>Inline checkboxes and radios</h4>
+		<label class="checkbox-inline">
+		  <input type="checkbox" id="inlineCheckbox1" value="option1"> Check box
+		</label>
+		<label class="checkbox-inline">
+		  <input type="checkbox" id="inlineCheckbox2" value="option2"> Check box
+		</label>
+
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Radio button
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Radio button
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Radio button
+		</label>
+		
+		<h3>Selects</h3>
+		<select class="form-control">
+		  <option>1</option>
+		  <option>2</option>
+		  <option>3</option>
+		  <option>4</option>
+		  <option>5</option>
+		</select>
+		<br>
+		<select multiple class="form-control">
+		  <option>1</option>
+		  <option>2</option>
+		  <option>3</option>
+		  <option>4</option>
+		  <option>5</option>
+		</select>
 	</div>
 </div>
