@@ -3,11 +3,11 @@
 		<h1>Bootstrap form builder</h1>
 		<h2>Basic form</h2>
 		<%= bootstrap_builder_form_for @user, url: {action: "create"} do |user_f| %>
-			<%= user_f.button_test %>
 			<%= user_f.email_field :name, label_text: "Email" %>
 			<%= user_f.password_field :name, label_text: "Password" %>
 			<%= user_f.check_box :name, label_text: "Check box" %>
 			<%= user_f.submit "Sabmit" %>
+			<%= user_f.button tag: :a, text: "Sabmit", style: :primary %>
 		<% end %>
 		
 		<h2>Inline form</h2>

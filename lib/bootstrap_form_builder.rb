@@ -1,6 +1,4 @@
 require "bootstrap_form_builder/version"
-require "bootstrap_form_builder/form"
-require "bootstrap_form_builder/control"
 
 module BootstrapFormBuilder
   module Rails
