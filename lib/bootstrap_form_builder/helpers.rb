@@ -1,8 +1,8 @@
-require "helpers/button_helper"
-require "helpers/control_helper"
-require "helpers/form_helper"
-require "helpers/grid_system_helper"
-require "helpers/tag_helper"
+require "bootstrap_form_builder/helpers/button_helper"
+require "bootstrap_form_builder/helpers/control_helper"
+require "bootstrap_form_builder/helpers/form_helper"
+require "bootstrap_form_builder/helpers/grid_system_helper"
+require "bootstrap_form_builder/helpers/tag_helper"
 
 module BootstrapFormBuilder
   module Helpers
