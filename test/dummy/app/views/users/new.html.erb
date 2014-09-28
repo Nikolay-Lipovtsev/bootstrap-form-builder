@@ -6,8 +6,7 @@
 			<%= user_f.email_field :name, label_text: "Email" %>
 			<%= user_f.password_field :name, label_text: "Password" %>
 			<%= user_f.check_box :name, label_text: "Check box" %>
-			<%= user_f.submit "Sabmit" %>
-			<%= user_f.button tag: :a, text: "Sabmit", style: :primary %>
+			<%= user_f.button tag: :a, text: "Sabmit", style: :primary, control_col: 12 %>
 		<% end %>
 		
 		<h2>Inline form</h2>

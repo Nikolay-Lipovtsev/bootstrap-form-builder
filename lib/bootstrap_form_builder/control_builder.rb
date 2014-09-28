@@ -3,13 +3,13 @@ require "bootstrap_form_builder/helpers"
 module BootstrapFormBuilder
   module ControlBuilder
     class Base < ActionView::Helpers::FormBuilder
-
+      
       include BootstrapFormBuilder::Helpers
     
       COMMON_OPTIONS = [:layout, :label_class, :label_col, :offset_label_col, :label_text, :invisible_label, :required, 
         :control_class, :control_col, :offset_control_col, :placeholder, :popover, :error_disable, :row_disable, 
         :inline, :grid_system, :disabled, :rows]
-
+      
       LABEL_OPTIONS = [:layout, :label_class, :label_col, :label_text, :label_offset, :invisible_label, :grid_system]
 
       CONTROL_OPTIONS = [:class, :placeholder, :data, :html, :disabled, :rows]
@@ -28,7 +28,6 @@ module BootstrapFormBuilder
         define_method helper do |field, *args|
           options = args.detect{ |a| a.is_a?(Hash) } || {}
           generate_all(helper, field, options) do
-            options[:control_col] ||= default_date_col if helper == "date_field"
             options[:placeholder] ||= I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{field}") if options[:placeholder] || options[:invisible_label]
             options[:class] = ["form-control", options[:class]].compact.join(" ")
             super(field, options.slice(*CONTROL_OPTIONS))
@@ -61,6 +60,8 @@ module BootstrapFormBuilder
         fields_for_without_bootstrap(record_name, record_object, fields_options, &block)
       end
       
+      alias_method_chain :fields_for, :bootstrap
+      
       def get_common_form_options(options = {})
         COMMON_FORM_OPTIONS.each { |name| options[name] ||= @options[name] if @options[name] }
       end
@@ -68,8 +69,10 @@ module BootstrapFormBuilder
       def check_box_or_radio?(helper)
         CHECK_BOX_AND_RADIO_HELPERS.include?(helper)
       end
-
-      alias_method_chain :fields_for, :bootstrap
+      
+      def button(options = {})
+        generate_button(options)
+      end
     end
   end
 end

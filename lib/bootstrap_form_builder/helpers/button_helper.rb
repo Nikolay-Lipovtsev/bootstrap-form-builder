@@ -11,16 +11,18 @@ module BootstrapFormBuilder
       # :class
       # :text
       # :desabled
-      def button(options = {})
+      # :control_col
+      
+      def generate_button(options = {})
     
         options[:tag] ||= :input
-        return options[:tag]
         options[:type] = options[:type].to_s if options[:type]
         options[:style] ||= :default
         options[:style] = "btn-#{options[:style].to_s}"
         options[:size] = "btn-#{options[:size].to_s}" if options[:size]
         options[:class] = ["disabled", options[:class]].compact.join(" ") if options[:disabled] && options[:tag] = :a
         options[:class] = ["btn", options[:style], options[:size], options[:class]].compact.join(" ")
+        options[:class] = ["btn-block", options[:class]].compact.join(" ") if options[:control_col]
         options[:tag] != :a ? options[:type] ||= "submit" : options[:type] ||= "button"
         if options[:tag] = :input
           options[:value] = options[:text]

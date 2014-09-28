@@ -76,34 +76,6 @@ module BootstrapFormBuilder
         end
       end
 
-      def grid_system_class(grid_system, col, type = :control)
-        "col-#{(grid_system || default_grid_system).to_s}-#{col || (type == :control ? default_horizontal_control_col : default_horizontal_label_col)}"
-      end
-
-      def grid_system_offset_class(grid_system, col)
-        "col-#{(grid_system || default_grid_system).to_s}-offset-#{col}" if col
-      end
-
-      def default_horizontal_label_col
-        3
-      end
-
-      def default_control_col
-        12
-      end
-
-      def default_horizontal_control_col
-        7
-      end
-
-      def default_date_col
-        4
-      end
-
-      def default_grid_system
-        "sm"
-      end
-
       def error_class
         "has-error"
       end
