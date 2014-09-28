@@ -22,7 +22,7 @@ module BootstrapFormBuilder
 
         options[:html] ||= {}
         options[:html][:role] = "form"
-        options[:builder] ||= BootstrapFormBuilder::ControlBuilder
+        options[:builder] ||= BootstrapFormBuilder::ControlBuilder::Base
 
         layout = case options[:layout]
         when :inline

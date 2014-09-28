@@ -2,10 +2,6 @@ module BootstrapFormBuilder
   module Helpers
     module ControlHelper
 
-      def get_common_form_options(options = {})
-        COMMON_FORM_OPTIONS.each { |name| options[name] ||= @options[name] if @options[name] }
-      end
-
       def generate_form_group_row(options = {})
         if (options[:control_col] || options[:offset_control_col]) && !(options[:row_disable] || options[:layout])
           bootstrap_row { yield }
@@ -68,10 +64,6 @@ module BootstrapFormBuilder
         else
           yield
         end
-      end
-
-      def check_box_or_radio?(helper)
-        CHECK_BOX_AND_RADIO_HELPERS.include?(helper)
       end
 
       def has_error?(field, options = {})
