@@ -1,5 +1,5 @@
 require "bootstrap_form_builder/version"
-require "bootstrap_form_builder/control_builder"
+require "bootstrap_form_builder/base"
 
 module BootstrapFormBuilder
   module Rails
@@ -8,4 +8,4 @@ module BootstrapFormBuilder
   end
 end
 
-ActionView::Base.send :include, BootstrapFormBuilder::Helpers::FormHelper
+ActionView::Base.send :include, BootstrapFormBuilder::Helpers

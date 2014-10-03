@@ -2,7 +2,7 @@ module BootstrapFormBuilder
   module Helpers
     module FormHelper
 
-      def bootstrap_builder_form_for(object, options = {}, &block)
+      def bootstrap_form_for(object, options = {}, &block)
         # Options for form
         #
         # :layout
