@@ -12,3 +12,29 @@ gemspec
 
 # To use debugger
 # gem 'debugger'
+
+# Use Bootstrap
+gem 'bootstrap-sass', '~> 3.1.1.1'
+gem 'bootstrap-select-rails', '~> 1.3.0.1'
+gem 'bootstrap-datepicker-rails', '~> 1.3.0.2'
+
+# Icons by Font Awesome SASS
+gem 'font-awesome-sass'
+
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails',   '~> 4.0.3'
+  gem 'coffee-rails', '~> 4.0.1'
+  gem 'uglifier',     '>= 2.5.1'
+end
+
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
+
+# Turbolinks makes following links in your web application faster. 
+gem 'turbolinks'
+
+group :development do
+  gem 'annotate', '~> 2.6.3'
+end

@@ -1,0 +1,289 @@
+<div class="row">
+	<div class="col-md-6">
+		<h1>Bootstrap form builder</h1>
+		<h2>Basic form</h2>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.generate_button(tag: :input, text: "test") %>
+		<% end %>
+		
+		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
+			<% #bootstrap_row{ "test" } %>
+			<% #user_f.email_field :name, label_text: "Email" %>
+			<% #user_f.password_field :name, label_text: "Password" %>
+			<% #user_f.check_box :name, label_text: "Check box" %>
+			<% #user_f.button tag: :a, text: "Sabmit", style: :primary, control_col: 12 %>
+		<% #end %>
+		
+		<h2>Inline form</h2>
+		<% #bootstrap_builder_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
+			<% #user_f.email_field :name, label_text: "Email" %>
+			<% #user_f.password_field :name, label_text: "Password" %>
+			<% #user_f.check_box :name, label_text: "Check box" %>
+			<% #user_f.submit "Sabmit" %>
+		<% #end %>
+		
+		<h2>Horizontal form</h2>
+		<% #bootstrap_builder_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
+			<% #user_f.email_field :name, label_text: "Email" %>
+			<% #user_f.password_field :name, label_text: "Password" %>
+			<% #user_f.check_box :name, label_text: "Check box" %>
+			<% #user_f.submit "Sabmit" %>
+		<% #end %>
+		
+		<h2>Supported controls</h2>
+		<h3>Inputs</h3>
+		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
+			<% #user_f.color_field :name, label_text: "Color field" %>
+			<% #user_f.date_field :name, label_text: "Date field" %>
+			<% #user_f.datetime_field :name, label_text: "Date time field" %>
+			<% #user_f.datetime_local_field :name, label_text: "Date time local field" %>
+			<% #user_f.email_field :name, label_text: "Email field" %>
+			<% #user_f.month_field :name, label_text: "Month field" %>
+			<% #user_f.number_field :name, label_text: "Number field" %>
+			<% #user_f.password_field :name, label_text: "Password field" %>
+			<% #user_f.phone_field :name, label_text: "Phone field" %>
+			<% #user_f.range_field :name, label_text: "Range field" %>
+			<% #user_f.search_field :name, label_text: "Search field" %>
+			<% #user_f.telephone_field :name, label_text: "Telephone field" %>
+			<% #user_f.text_area :name, label_text: "Text area" %>
+			<% #user_f.text_field :name, label_text: "Text field" %>
+			<% #user_f.time_field :name, label_text: "Time field" %>
+			<% #user_f.url_field :name, label_text: "Url field" %>
+			<% #user_f.week_field :name, label_text: "Week field" %>
+		<% #end %>
+		<h3>Checkboxes and radios</h3>
+		<h4>Default (stacked)</h4>
+		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
+			<% #user_f.check_box :name, label_text: "Check box" %>
+			<% #user_f.check_box :name, label_text: "Check box" %>
+			<% #user_f.radio_button :name, label_text: "Radio button" %>
+			<% #user_f.radio_button :name, label_text: "Radio button" %>
+			<% #user_f.radio_button :name, label_text: "Radio button" %>
+		<% #end %>
+		<h4>Inline checkboxes and radios</h4>
+		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
+			<% #user_f.check_box :name, label_text: "Check box", inline: true %>
+			<% #user_f.check_box :name, label_text: "Check box", inline: true %>
+			<% #user_f.radio_button :name, label_text: "Radio button", inline: true %>
+			<% #user_f.radio_button :name, label_text: "Radio button", inline: true %>
+			<% #user_f.radio_button :name, label_text: "Radio button", inline: true %>
+		<% #end %>
+	</div>
+	<div class="col-md-6">
+		<h1>Normal Bootstrap form</h1>
+		<h2>Basic form</h2>
+		<form role="form">
+		  <div class="form-group">
+		    <label for="exampleInputEmail1">Email</label>
+		    <input type="email" class="form-control" id="exampleInputEmail1">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPassword1">Password</label>
+		    <input type="password" class="form-control" id="exampleInputPassword1">
+		  </div>
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox"> Check box
+		    </label>
+		  </div>
+		  <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+		
+		<h2>Inline form</h2>
+		<form class="form-inline" role="form">
+		  <div class="form-group">
+		    <label class="sr-only" for="exampleInputEmail2">Email address</label>
+		    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+		  </div>
+		  <div class="form-group">
+		    <div class="input-group">
+		      <div class="input-group-addon">@</div>
+		      <input class="form-control" type="email" placeholder="Enter email">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="sr-only" for="exampleInputPassword2">Password</label>
+		    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+		  </div>
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox"> Check box
+		    </label>
+		  </div>
+		  <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+		
+		<h2>Horizontal form</h2>
+		<form class="form-horizontal" role="form">
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+		    <div class="col-sm-10">
+		      <input type="email" class="form-control" id="inputEmail3">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-10">
+		      <input type="password" class="form-control" id="inputPassword3">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <div class="checkbox">
+		        <label>
+		          <input type="checkbox"> Check box
+		        </label>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default">Submit</button>
+		    </div>
+		  </div>
+		</form>
+		
+		<h2>Supported controls</h2>
+		<h3>Inputs</h3>
+		<form role="form">
+		  <div class="form-group">
+		    <label for="exampleInputColor">Color field</label>
+		    <input type="color" class="form-control" id="exampleInputColor">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputDate">Date field</label>
+		    <input type="date" class="form-control" id="exampleInputDate">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputDateTime">Date time field</label>
+		    <input type="datetime" class="form-control" id="exampleInputDateTime">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputDateTimeLocal">Date time local field</label>
+		    <input type="datetime-local" class="form-control" id="exampleInputDateTimeLocal">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputEmail">Email field</label>
+		    <input type="email" class="form-control" id="exampleInputEmail">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputMonth">Month field</label>
+		    <input type="month" class="form-control" id="exampleInputMonth">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputNumber">Number field</label>
+		    <input type="number" class="form-control" id="exampleInputNumber">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPassword">Password field</label>
+		    <input type="password" class="form-control" id="exampleInputPassword">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPhone">Phone field</label>
+		    <input type="tel" class="form-control" id="exampleInputPhone">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputRange">Range field</label>
+		    <input type="range" class="form-control" id="exampleInputRange">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputSearch">Search field</label>
+		    <input type="search" class="form-control" id="exampleInputSearch">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputTelephone">Telephone field</label>
+		    <input type="tel" class="form-control" id="exampleInputTelephone">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputTextArea">Text area</label>
+		    <textarea class="form-control" id="exampleInputTextArea" rows="2"></textarea>
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputText">Text field</label>
+		    <input type="text" class="form-control" id="exampleInputText">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputTime">Time field</label>
+		    <input type="time" class="form-control" id="exampleInputTime">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputUrl">Url field</label>
+		    <input type="url" class="form-control" id="exampleInputUrl">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputWeek">Week field</label>
+		    <input type="week" class="form-control" id="exampleInputWeek">
+		  </div>
+		  
+		</form>
+		
+		<h3>Checkboxes and radios</h3>
+		<h4>Default (stacked)</h4>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" value="">
+		    Check box
+		  </label>
+		</div>
+		<div class="checkbox disabled">
+		  <label>
+		    <input type="checkbox" value="" disabled>
+		    Check box
+		  </label>
+		</div>
+
+		<div class="radio">
+		  <label>
+		    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+		    Radio button
+		  </label>
+		</div>
+		<div class="radio">
+		  <label>
+		    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+		    Radio button
+		  </label>
+		</div>
+		<div class="radio disabled">
+		  <label>
+		    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+		    Radio button
+		  </label>
+		</div>
+		
+		<h4>Inline checkboxes and radios</h4>
+		<label class="checkbox-inline">
+		  <input type="checkbox" id="inlineCheckbox1" value="option1"> Check box
+		</label>
+		<label class="checkbox-inline">
+		  <input type="checkbox" id="inlineCheckbox2" value="option2"> Check box
+		</label>
+
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Radio button
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Radio button
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Radio button
+		</label>
+		
+		<h3>Selects</h3>
+		<select class="form-control">
+		  <option>1</option>
+		  <option>2</option>
+		  <option>3</option>
+		  <option>4</option>
+		  <option>5</option>
+		</select>
+		<br>
+		<select multiple class="form-control">
+		  <option>1</option>
+		  <option>2</option>
+		  <option>3</option>
+		  <option>4</option>
+		  <option>5</option>
+		</select>
+	</div>
+</div>
