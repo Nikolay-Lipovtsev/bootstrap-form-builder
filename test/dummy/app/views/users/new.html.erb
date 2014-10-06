@@ -2,9 +2,7 @@
 	<div class="col-md-6">
 		<h1>Bootstrap form builder</h1>
 		<h2>Basic form</h2>
-		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
-			<%= user_f.generate_button(tag: :input, text: "test") %>
-		<% end %>
+		<%= button_tag(class: "test", type: "button") %>
 		
 		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
 			<% #bootstrap_row{ "test" } %>

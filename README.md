@@ -6,5 +6,6 @@ BootstrapFormBuilder
 \---- FormHelper
 \---- FormTagHelper
 \---- GridSystemHelper
+\---- TagHelper
 #Licenses
 This project rocks and uses MIT-LICENSE.
