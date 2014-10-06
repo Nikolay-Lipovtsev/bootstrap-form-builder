@@ -3,7 +3,7 @@ module BootstrapFormBuilder
     module Blocks
       module ButtonTag
         
-        def button_tag(options = nil, &block)
+        def button_tag(options = {}, &block)
           content = options[:content]
           options = base_class(options)
           options = { name: "button", type: "submit", tag: :button }.merge!(options.symbolize_keys)
@@ -19,17 +19,17 @@ module BootstrapFormBuilder
         def button_link_tag(name = nil, options = nil, html_options = nil, &block)
           html_options = base_class(html_options)
           html_options = { role: "button" }.merge!(html_options.symbolize_keys)
-          link_to (name || "Button"), options, html_options, &block
+          name ||= "Button"
+          link_to name, options, html_options, &block
         end
         
         private
         
-        def base_class(options = {})
-          options[:style] = "btn-#{(options[:style] || "default").to_s}"
-          options[:size] = "btn-#{options[:size].to_s}" if options[:size]
-          options[:class] = ["btn", options[:style],  options[:size], options[:class]].compact.join(" ")
-          return "test"
-          options.delete_if{ |k, v| [:style, :size].include? k }
+        def base_class(html_options = {})
+          html_options[:style] = "btn-#{(html_options[:style] || "default").to_s}"
+          html_options[:size] = "btn-#{html_options[:size].to_s}" if html_options[:size]
+          html_options[:class] = ["btn", html_options[:style],  html_options[:size], html_options[:class]].compact.join(" ")
+          html_options.delete_if{ |k, v| [:style, :size].include? k }
         end
       end
     end
