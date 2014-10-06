@@ -3,6 +3,7 @@
 		<h1>Bootstrap form builder</h1>
 		<h2>Basic form</h2>
 		<%= button_tag(class: "test", type: "button") %>
+		<%= button_link_tag("Test", url:"#", class: "test", type: "button") %>
 		
 		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
 			<% #bootstrap_row{ "test" } %>

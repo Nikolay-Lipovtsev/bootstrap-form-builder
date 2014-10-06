@@ -15,6 +15,10 @@ module BootstrapFormBuilder
         
         super options, &block
       end
+      
+      def button_link_tag(name = nil, options = nil, html_options = nil, &block)
+        super name, options, html_options, &block
+      end
     end
   end
 end
