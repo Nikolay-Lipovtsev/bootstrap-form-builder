@@ -10,15 +10,15 @@ module BootstrapFormBuilder
       
       alias :control_group :bootstrap_row
       
-      def bootstrap_col(options = {})
-        options[:class] = [grid_system_class(options[:grid_system], options[:col]), 
+      def bootstrap_col(col = nil, options = {})
+        options[:class] = [grid_system_class(options[:grid_system], col), 
                           grid_system_offset_class(options[:grid_system], options[:offset_col]), 
                           options[:class]].compact.join(" ")
         content_tag(:div, class: options[:class]) { yield }
       end
       
-      def bootstrap_row_with_col(options = {})
-        bootstrap_row(options) { bootstrap_col(options.slice(:grid_system, :col, :offset_col)) { yield }}
+      def bootstrap_row_with_col(col = nil, options = {})
+        bootstrap_row(options) { bootstrap_col(col, options.slice(:grid_system, :offset_col)) { yield }}
       end
       
       def grid_system_class(grid_system = default_grid_system, col = default_control_col)

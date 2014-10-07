@@ -1,7 +1,7 @@
 require "bootstrap_form_builder/helpers/form_helper"
 require "bootstrap_form_builder/helpers/form_tag_helper"
-require "bootstrap_form_builder/helpers/grid_system_helper"
 require "bootstrap_form_builder/helpers/tag_helper"
+require "bootstrap_form_builder/helpers/grid_system_helper"
 
 module BootstrapFormBuilder
   module Helpers

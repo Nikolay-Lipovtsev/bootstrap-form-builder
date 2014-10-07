@@ -5,6 +5,13 @@ module BootstrapFormBuilder
     module FormTagHelper
       include BootstrapFormBuilder::Helpers::Blocks::ButtonTag 
       
+      # :tag
+      # :style
+      # :size
+      # :class
+      # :active
+      # :disabled
+      # :col
       def button_tag(content_or_options = nil, options = nil, &block)
         if content_or_options.is_a? Hash
           options = content_or_options
@@ -13,11 +20,17 @@ module BootstrapFormBuilder
           options[:content] = content_or_options
         end
         
-        super options, &block
+        button_block(options[:col]) { super options, &block }
       end
       
       def button_link_tag(name = nil, options = nil, html_options = nil, &block)
-        super name, options, html_options, &block
+        button_block(html_options[:col]) { super name, options, html_options, &block }
+      end
+      
+      private
+      
+      def button_block(col = nil)
+        col ? bootstrap_row_with_col(col) { yield } : yield
       end
     end
   end
