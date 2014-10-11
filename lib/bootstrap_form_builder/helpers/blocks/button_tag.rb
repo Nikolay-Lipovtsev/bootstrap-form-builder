@@ -30,9 +30,10 @@ module BootstrapFormBuilder
         def base_class(html_options = {})
           html_options[:style] = "btn-#{(html_options[:style] || "default").to_s}"
           html_options[:size] = "btn-#{html_options[:size].to_s}" if html_options[:size]
-          html_options[:class] = ["btn", html_options[:style],  html_options[:size], html_options[:class]].compact.join(" ")
+          html_options[:active] = "active" if html_options[:active]
+          html_options[:class] = ["btn", html_options[:style],  html_options[:size], html_options[:class], html_options[:active]].compact.join(" ")
           html_options[:class] = [html_options[:class], "btn-block"].compact.join(" ") if html_options[:col]
-          html_options.delete_if{ |k, v| [:style, :size, :col].include? k }
+          html_options.delete_if{ |k, v| [:style, :size, :col, :active].include? k }
         end
       end
     end

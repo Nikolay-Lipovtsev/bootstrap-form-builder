@@ -1,10 +1,54 @@
 <div class="row">
 	<div class="col-md-6">
-		<h1>Bootstrap form builder</h1>
+		<h1>Bootstrap buttons</h1>
+		<p>With Bootstrap form builder</p>
+		<h2>Styles</h2>
+		<%= button_tag("Default") %>
+		<%= button_tag("Primary", style: "primary") %>
+		<%= button_tag("Success", style: "success") %>
+		<%= button_tag("Info", style: "info") %>
+		<%= button_tag("Warning", style: "warning") %>
+		<%= button_tag("Danger", style: "danger") %>
+		<%= button_tag("Link", style: "link") %>
+		
+		<h2>Sizes</h2>
+		<p>
+			<%= button_tag("Large button", style: "primary", size: "lg") %>
+			<%= button_tag("Large button", size: "lg") %>
+		</p>
+		<p>
+			<%= button_tag("Default button", style: "primary") %>
+			<%= button_tag("Default button") %>
+		</p>
+		<p>
+			<%= button_tag("Small button", style: "primary", size: "sm") %>
+			<%= button_tag("Small button", size: "sm") %>
+		</p>
+		<p>
+			<%= button_tag("Extra small button", style: "primary", size: "xs") %>
+			<%= button_tag("Extra small button", size: "xs") %>
+		</p>
+		<p>
+			<%= button_tag("Block level button", style: "primary", col: 12, size: "lg") %>
+		<p>
+		</p>
+			<%= button_tag("Block level button", col: 12, size: "lg") %>
+		</p>
+		
+		<h2>Active state</h2>
+		<h3>Button element</h3>
+		<%= button_tag("Primary", style: "primary", active: true) %>
+		<%= button_tag("Default", active: true) %>
+		
+		<h3>Anchor element</h3>
+		<%# button_link_tag("Primary", :url, style: "primary", active: true) %>
+		<%# button_link_tag("Default", :url, active: true) %>
+		
+		<h1>Bootstrap form</h1>
+		<p>With Bootstrap form builder</p>
 		<h2>Basic form</h2>
-		<%= button_tag(class: "test", type: "button", col: 6, style: "primary") %>
+		<%= button_tag("Test",class: "test", type: "button", col: 6, style: "primary") %>
 		<%= button_link_tag("Test", "test-url", class: "test", type: "button", col: 4, offset_col: 2) %>
-		<%= bootstrap_row {"Test"} %>
 		
 		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
 			<% #bootstrap_row{ "test" } %>
@@ -70,7 +114,43 @@
 		<% #end %>
 	</div>
 	<div class="col-md-6">
-		<h1>Normal Bootstrap form</h1>
+		<h1>Bootstrap buttons</h1>
+		<p>Without Bootstrap form builder (normal Bootstrap form with HTML ERB)</p>
+		<h2>Styles</h2>
+		<button type="button" class="btn btn-default">Default</button>
+		<button type="button" class="btn btn-primary">Primary</button>
+		<button type="button" class="btn btn-success">Success</button>
+		<button type="button" class="btn btn-info">Info</button>
+		<button type="button" class="btn btn-warning">Warning</button>
+		<button type="button" class="btn btn-danger">Danger</button>
+		<button type="button" class="btn btn-link">Link</button>
+		
+		<h2>Sizes</h2>
+		<p>
+		  <button type="button" class="btn btn-primary btn-lg">Large button</button>
+		  <button type="button" class="btn btn-default btn-lg">Large button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary">Default button</button>
+		  <button type="button" class="btn btn-default">Default button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary btn-sm">Small button</button>
+		  <button type="button" class="btn btn-default btn-sm">Small button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary btn-xs">Extra small button</button>
+		  <button type="button" class="btn btn-default btn-xs">Extra small button</button>
+		</p>
+		<p>
+			<button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
+		</p>
+		<p>
+			<button type="button" class="btn btn-default btn-lg btn-block">Block level button</button>
+		</p>
+		
+		<h1>Bootstrap form</h1>
+		<p>Without Bootstrap form builder (normal Bootstrap form with HTML ERB)</p>
 		<h2>Basic form</h2>
 		<form role="form">
 		  <div class="form-group">
