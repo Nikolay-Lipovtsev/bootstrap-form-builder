@@ -8,7 +8,7 @@ module BootstrapFormBuilder
       # === Options
       # You can use only symbols for the attribute names.
       #
-      # <tt>:row_disable</tt> if set to true, the content will build without bootstrap row div block,
+      # <tt>:row_disabled</tt> if set to true, the content will build without bootstrap row div block,
       # it will return empty content.
       #
       # === Examples
@@ -18,11 +18,11 @@ module BootstrapFormBuilder
       # bootstrap_row(class: "foo") { "Test" }
       # # => <div class="row foo">"Test"</div>
       #
-      # bootstrap_row(row_disable: true) { "Test" }
+      # bootstrap_row(row_disabled: true) { "Test" }
       # # => "Test"
       def bootstrap_row(options = {})
         options[:class] = ["row", options[:class]].compact.join(" ")
-        options[:row_disable] ? yield : content_tag(:div, class: options[:class]) { yield }
+        options[:row_disabled] ? yield : content_tag(:div, class: options[:class]) { yield }
       end
       
       alias :control_group :bootstrap_row
@@ -65,7 +65,7 @@ module BootstrapFormBuilder
       # === Options
       # You can use only symbols for the attribute names.
       #
-      # <tt>:row_disable</tt> if set to true, it will create only HTML div block with bootstrap grid column class
+      # <tt>:row_disabled</tt> if set to true, it will create only HTML div block with bootstrap grid column class
       # and without HTML div block with bootstrap row class.
       #
       # === Examples
@@ -107,10 +107,12 @@ module BootstrapFormBuilder
         bootstrap_row(options) { bootstrap_col(col, options.slice(:grid_system, :offset_col)) { yield }}
       end
       
+      # Creates a HTML class with Bootstrap col.
       def grid_system_class(grid_system = default_grid_system, col = default_col)
         "col-#{(grid_system || default_grid_system).to_s}-#{col || default_col}"
       end
-
+      
+      # Creates a HTML class with Bootstrap offset-col.
       def grid_system_offset_class(grid_system, col)
         "col-#{(grid_system || default_grid_system).to_s}-offset-#{col}" if col
       end

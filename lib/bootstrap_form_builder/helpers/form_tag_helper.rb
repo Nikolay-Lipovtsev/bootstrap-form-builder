@@ -8,7 +8,6 @@ module BootstrapFormBuilder
       
       # Creates a HTML div block with bootstrap row class.
       # ==== Options
-      # :tag
       # :style
       # :size
       # :class
@@ -16,7 +15,7 @@ module BootstrapFormBuilder
       # :disabled
       # :col
       # :offset_col
-      # :row_disable
+      # :row_disabled
       def button_tag(content_or_options = nil, options = nil, &block)
         if content_or_options.is_a? Hash
           options = content_or_options
@@ -26,7 +25,6 @@ module BootstrapFormBuilder
         
         button_block(options[:col], options) do
           options = base_button_class(options)
-          options[:disabled] = "disabled" if options[:disabled]
           options = { name: "button", type: "submit" }.merge!(options.symbolize_keys)
           if block_given?
             content_tag :button, options, &block
@@ -36,7 +34,7 @@ module BootstrapFormBuilder
         end
       end
       
-      def button_link_tag(name = nil, options = nil, html_options = nil, &block)
+      def button_link_tag(name = nil, options = nil, html_options = {}, &block)
         button_block(html_options[:col], html_options) do
           html_options = base_button_class(html_options)
           html_options[:class] = [html_options[:class], "disabled"].compact.join(" ") if html_options[:disabled]
@@ -46,15 +44,21 @@ module BootstrapFormBuilder
         end
       end
       
-      def submit_tag(value = nil, options = {})
+      def submit_tag(value = nil, options = nil)
+        options ||= {}
         options = base_button_class(options)
         button_block(options[:col], options) { super value || "Save changes", options }
+      end
+      
+      def button_input_tag(value = nil, options = {})
+        options[:type] = :button
+        submit_tag(value, options)
       end
       
       private
       
       def button_block(col = nil, options = {})
-        col ? bootstrap_row_with_col(col, options.slice(:row_disable, :offset_col)) { yield } : yield
+        col ? bootstrap_row_with_col(col, options.slice(:row_disabled, :offset_col)) { yield } : yield
       end
       
       def base_button_class(html_options = {})
