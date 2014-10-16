@@ -2,7 +2,7 @@
 	<div class="col-md-6">
 		<h1>Bootstrap buttons</h1>
 		<p>With Bootstrap form builder</p>
-		
+
 		<h2><br>Styles</h2>
 		<hr>
 		<%= button_tag("Default") %>
@@ -37,7 +37,6 @@
 		</p>
 			<%= button_tag("Block level button", col: 12, size: "lg") %>
 		</p>
-		
 		
 		<h2><br>Active state</h2>
 		<hr>
@@ -75,19 +74,21 @@
 		<%= button_input_tag("Input") %>
 		<%= submit_tag("Submit") %>
 		
-		
 		<h1><br><br>Bootstrap form</h1>
 		<p>With Bootstrap form builder</p>
 		<h2><br>Basic form</h2>
-		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
-			<% #bootstrap_row{ "test" } %>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.label(:name) { content_tag :p, "Test"} %>
+			<%= user_f.label(:name, "Test") %>
 			<% #user_f.email_field :name, label_text: "Email" %>
 			<% #user_f.password_field :name, label_text: "Password" %>
 			<% #user_f.check_box :name, label_text: "Check box" %>
 			<% #user_f.button tag: :a, text: "Sabmit", style: :primary, control_col: 12 %>
-		<% #end %>
+		<% end %>
 		
 		<h2><br>Inline form</h2>
+		<hr>
 		<% #bootstrap_builder_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
 			<% #user_f.email_field :name, label_text: "Email" %>
 			<% #user_f.password_field :name, label_text: "Password" %>
@@ -96,6 +97,7 @@
 		<% #end %>
 		
 		<h2><br>Horizontal form</h2>
+		<hr>
 		<% #bootstrap_builder_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
 			<% #user_f.email_field :name, label_text: "Email" %>
 			<% #user_f.password_field :name, label_text: "Password" %>
@@ -104,6 +106,7 @@
 		<% #end %>
 		
 		<h2><br>Supported controls</h2>
+		<hr>
 		<h3>Inputs</h3>
 		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
 			<% #user_f.color_field :name, label_text: "Color field" %>

@@ -8,18 +8,19 @@ module BootstrapFormBuilder
       # === Options
       # You can use only symbols for the attribute names.
       #
-      # <tt>:row_disabled</tt> if set to true, the content will build without bootstrap row div block,
-      # it will return empty content.
+      # <tt>:row_disabled</tt> if set to true, the content will build without bootstrap row div block, it will return
+      # empty content.
       #
       # === Examples
       # bootstrap_row { "Test" }
-      # # => <div class="row">"Test"</div>
+      # # => <div class="row">Test</div>
       #
       # bootstrap_row(class: "foo") { "Test" }
-      # # => <div class="row foo">"Test"</div>
+      # # => <div class="row foo">Test</div>
       #
       # bootstrap_row(row_disabled: true) { "Test" }
-      # # => "Test"
+      # # => Test
+		  #
       def bootstrap_row(options = {})
         options[:class] = ["row", options[:class]].compact.join(" ")
         options[:row_disabled] ? yield : content_tag(:div, class: options[:class]) { yield }
@@ -32,30 +33,27 @@ module BootstrapFormBuilder
       # === Options
       # You can use only symbols for the attribute names.
       #
-      # <tt>:grid_system</tt> if the set value from bootstrap grid system you can chenge default value "sm" 
-      # to "xs", "sm", "md" or "lg". You can use string and symbols for the values
+      # <tt>:grid_system</tt> if the set value from bootstrap grid system you can chenge default value "sm" to "xs",
+      # "sm", "md" or "lg". You can use string and symbols for the values
       # 
-      # <tt>:offset_col</tt> if the set value in the range from 1 to 12 it generate bootstrap offset class 
-      # in HTML div block with bootstrap grid column.
+      # <tt>:offset_col</tt> if the set value in the range from 1 to 12 it generate bootstrap offset class in HTML div
+      # block with bootstrap grid column.
       #
       # === Examples
-      # bootstrap_col { "Test" }
-      # # => <div class="col-sm-12">"Test"</div>
+      # bootstrap_col(col: 6) { "Test" }
+      # # => <div class="col-sm-6">Test</div>
       #
-      # bootstrap_col(6) { "Test" }
-      # # => <div class="col-sm-6">"Test"</div>
+      # bootstrap_col(col: 6, offset_col: 4) { "Test" }
+      # # => <div class="col-sm-6 col-sm-offset-4">Test</div>
       #
-      # bootstrap_col(6, offset_col: 4) { "Test" }
-      # # => <div class="col-sm-6 col-sm-offset-4">"Test"</div>
+      # bootstrap_col(col: 6, class: "foo") { "Test" }
+      # # => <div class="col-sm-6 foo">Test</div>
       #
-      # bootstrap_col(6, class: "foo") { "Test" }
-      # # => <div class="col-sm-6 foo">"Test"</div>
-      #
-      # bootstrap_col(6, grid_system: :lg) { "Test" }
-      # # => <div class="col-lg-6 foo">"Test"</div>
-      def bootstrap_col(col = nil, options = {})
-        options[:class] = [grid_system_class(options[:grid_system], col), 
-                          grid_system_offset_class(options[:grid_system], options[:offset_col]), 
+      # bootstrap_col(col: 6, grid_system: :lg) { "Test" }
+      # # => <div class="col-lg-6">Test</div>
+      def bootstrap_col(options = {})
+        options[:class] = [grid_system_class(options[:col], options[:grid_system]), 
+                          grid_system_offset_class(options[:offset_col], options[:grid_system]), 
                           options[:class]].compact.join(" ")
         content_tag(:div, class: options[:class]) { yield }
       end
@@ -69,51 +67,44 @@ module BootstrapFormBuilder
       # and without HTML div block with bootstrap row class.
       #
       # === Examples
-      # bootstrap_row_with_col { "Test" }
-      # # => <div class="row">
-      #        <div class="col-sm-12">
-      #          "Test"
-      #        </div>
-      #      </div>
-      #
-      # bootstrap_row_with_col(6) { "Test" }
+      # bootstrap_row_with_col(col: 6) { "Test" }
       # # => <div class="row">
       #        <div class="col-sm-6">
-      #          "Test"
+      #          Test
       #        </div>
       #      </div>
       #
-      # bootstrap_row_with_col(6, offset_col: 4) { "Test" }
+      # bootstrap_row_with_col(col: 6, offset_col: 4) { "Test" }
       # # => <div class="row">
       #        <div class="col-sm-6 col-sm-offset-4">
-      #          "Test"
+      #          Test
       #        </div>
       #      </div>
       #
-      # bootstrap_row_with_col(6, class: "foo") { "Test" }
+      # bootstrap_row_with_col(col: 6, class: "foo") { "Test" }
       # # => <div class="row foo">
       #        <div class="col-sm-6">
-      #          "Test"
+      #          Test
       #        </div>
       #      </div>
       #
-      # bootstrap_row_with_col(6, grid_system: :lg) { "Test" }
+      # bootstrap_row_with_col(col: 6, grid_system: :lg) { "Test" }
       # # => <div class="row">
       #        <div class="col-lg-6">
-      #          "Test"
+      #          Test
       #        </div>
       #      </div>
-      def bootstrap_row_with_col(col = nil, options = {})
-        bootstrap_row(options) { bootstrap_col(col, options.slice(:grid_system, :offset_col)) { yield }}
+      def bootstrap_row_with_col(options = {})
+        bootstrap_row(options) { bootstrap_col(options.slice(:col, :offset_col, :grid_system)) { yield }}
       end
       
       # Creates a HTML class with Bootstrap col.
-      def grid_system_class(grid_system = default_grid_system, col = default_col)
-        "col-#{(grid_system || default_grid_system).to_s}-#{col || default_col}"
+      def grid_system_class(col = nil, grid_system = nil)
+        "col-#{(grid_system || default_grid_system).to_s}-#{col}" if col
       end
       
       # Creates a HTML class with Bootstrap offset-col.
-      def grid_system_offset_class(grid_system, col)
+      def grid_system_offset_class(col = nil, grid_system = nil)
         "col-#{(grid_system || default_grid_system).to_s}-offset-#{col}" if col
       end
       
