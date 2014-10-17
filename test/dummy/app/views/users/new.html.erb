@@ -1,20 +1,94 @@
 <div class="row">
 	<div class="col-md-6">
-		<h1>Bootstrap form builder</h1>
-		<h2>Basic form</h2>
-		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
-			<%= user_f.generate_button(tag: :input, text: "test") %>
-		<% end %>
+		<h1>Bootstrap buttons</h1>
+		<p>With Bootstrap form builder</p>
+
+		<h2><br>Styles</h2>
+		<hr>
+		<%= button_tag("Default") %>
+		<%= button_tag("Primary", style: "primary") %>
+		<%= button_tag("Success", style: "success") %>
+		<%= button_tag("Info", style: "info") %>
+		<%= button_tag("Warning", style: "warning") %>
+		<%= button_tag("Danger", style: "danger") %>
+		<%= button_tag("Link", style: "link") %>
 		
-		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
-			<% #bootstrap_row{ "test" } %>
+		<h2><br>Sizes</h2>
+		<hr>
+		<p>
+			<%= button_tag("Large button", style: "primary", size: "lg") %>
+			<%= button_tag("Large button", size: "lg") %>
+		</p>
+		<p>
+			<%= button_tag("Default button", style: "primary") %>
+			<%= button_tag("Default button") %>
+		</p>
+		<p>
+			<%= button_tag("Small button", style: "primary", size: "sm") %>
+			<%= button_tag("Small button", size: "sm") %>
+		</p>
+		<p>
+			<%= button_tag("Extra small button", style: "primary", size: "xs") %>
+			<%= button_tag("Extra small button", size: "xs") %>
+		</p>
+		<p>
+			<%= button_tag("Block level button", style: "primary", col: 12, size: "lg") %>
+		<p>
+		</p>
+			<%= button_tag("Block level button", col: 12, size: "lg") %>
+		</p>
+		
+		<h2><br>Active state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<%= button_tag("Primary button", style: "primary", active: true) %>
+		<%= button_tag("Button", active: true) %>
+	
+		<h3>Anchor element</h3>
+		<%= button_link_tag("Primary link", new_user_path, style: "primary", active: true) %>
+		<%= button_link_tag("Link", new_user_path, active: true) %>
+	
+		<h3>Submit element</h3>
+		<%= submit_tag("Primary submit", style: "primary", active: true) %>
+		<%= submit_tag("Submit", active: true) %>
+		
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<%= button_tag("Primary button", style: "primary", disabled: true) %>
+		<%= button_tag("Button", disabled: true) %>
+	
+		<h3>Anchor element</h3>
+		<%= button_link_tag("Primary link", new_user_path, style: "primary", disabled: true) %>
+		<%= button_link_tag("Link", new_user_path, disabled: true) %>
+	
+		<h3>Submit element</h3>
+		<%= submit_tag("Primary submit", style: "primary", disabled: true) %>
+		<%= submit_tag("Submit", disabled: true) %>
+		
+		<h2><br>Button tags</h2>
+		<hr>
+		<%= button_link_tag("Link", new_user_path) %>
+		<%= button_tag("Button") %>
+		<%= button_input_tag("Input") %>
+		<%= submit_tag("Submit") %>
+		
+		<h1><br><br>Bootstrap form</h1>
+		<p>With Bootstrap form builder</p>
+		<h2><br>Basic form</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.label(:name) { content_tag :p, "Test"} %>
+			<%= user_f.label(:name, "Test") %>
 			<% #user_f.email_field :name, label_text: "Email" %>
 			<% #user_f.password_field :name, label_text: "Password" %>
 			<% #user_f.check_box :name, label_text: "Check box" %>
 			<% #user_f.button tag: :a, text: "Sabmit", style: :primary, control_col: 12 %>
-		<% #end %>
+		<% end %>
 		
-		<h2>Inline form</h2>
+		<h2><br>Inline form</h2>
+		<hr>
 		<% #bootstrap_builder_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
 			<% #user_f.email_field :name, label_text: "Email" %>
 			<% #user_f.password_field :name, label_text: "Password" %>
@@ -22,7 +96,8 @@
 			<% #user_f.submit "Sabmit" %>
 		<% #end %>
 		
-		<h2>Horizontal form</h2>
+		<h2><br>Horizontal form</h2>
+		<hr>
 		<% #bootstrap_builder_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
 			<% #user_f.email_field :name, label_text: "Email" %>
 			<% #user_f.password_field :name, label_text: "Password" %>
@@ -30,7 +105,8 @@
 			<% #user_f.submit "Sabmit" %>
 		<% #end %>
 		
-		<h2>Supported controls</h2>
+		<h2><br>Supported controls</h2>
+		<hr>
 		<h3>Inputs</h3>
 		<% #bootstrap_builder_form_for @user, url: { action: "create" } do |user_f| %>
 			<% #user_f.color_field :name, label_text: "Color field" %>
@@ -69,9 +145,86 @@
 			<% #user_f.radio_button :name, label_text: "Radio button", inline: true %>
 		<% #end %>
 	</div>
+	
 	<div class="col-md-6">
-		<h1>Normal Bootstrap form</h1>
-		<h2>Basic form</h2>
+		<h1>Bootstrap buttons</h1>
+		<p>Without Bootstrap form builder (normal Bootstrap form with HTML ERB)</p>
+		
+		<h2><br>Styles</h2>
+		<hr>
+		<button type="button" class="btn btn-default">Default</button>
+		<button type="button" class="btn btn-primary">Primary</button>
+		<button type="button" class="btn btn-success">Success</button>
+		<button type="button" class="btn btn-info">Info</button>
+		<button type="button" class="btn btn-warning">Warning</button>
+		<button type="button" class="btn btn-danger">Danger</button>
+		<button type="button" class="btn btn-link">Link</button>
+		
+		<h2><br>Sizes</h2>
+		<hr>
+		<p>
+		  <button type="button" class="btn btn-primary btn-lg">Large button</button>
+		  <button type="button" class="btn btn-default btn-lg">Large button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary">Default button</button>
+		  <button type="button" class="btn btn-default">Default button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary btn-sm">Small button</button>
+		  <button type="button" class="btn btn-default btn-sm">Small button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary btn-xs">Extra small button</button>
+		  <button type="button" class="btn btn-default btn-xs">Extra small button</button>
+		</p>
+		<p>
+			<button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
+		</p>
+		<p>
+			<button type="button" class="btn btn-default btn-lg btn-block">Block level button</button>
+		</p>
+		
+		<h2><br>Active state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<button type="button" class="btn btn-primary active">Primary button</button>
+		<button type="button" class="btn btn-default active">Button</button>
+		
+		<h3>Anchor element</h3>
+		<a href="#" class="btn btn-primary active" role="button">Primary link</a>
+		<a href="#" class="btn btn-default active" role="button">Link</a>
+		
+		<h3>Submit element</h3>
+		<input class="btn btn-primary active" name="commit" type="submit" value="Primary submit">
+		<input class="btn btn-default active" name="commit" type="submit" value="Submit">
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<button type="button" class="btn btn-primary" disabled="disabled">Primary button</button>
+		<button type="button" class="btn btn-default" disabled="disabled">Button</button>
+		
+		<h3>Anchor element</h3>
+		<a href="#" class="btn btn-primary disabled" disabled="disabled" role="button">Primary link</a>
+		<a href="#" class="btn btn-default disabled" disabled="disabled" role="button">Link</a>
+		
+		<h3>Submit element</h3>
+		<input class="btn btn-primary" disabled="disabled" name="commit" type="submit" value="Primary submit">
+		<input class="btn btn-default" disabled="disabled" name="commit" type="submit" value="Submit">
+		
+		<h2><br>Button tags</h2>
+		<hr>
+		<a class="btn btn-default" href="#" role="button">Link</a>
+		<button class="btn btn-default" type="submit">Button</button>
+		<input class="btn btn-default" type="button" value="Input">
+		<input class="btn btn-default" type="submit" value="Submit">
+		
+		<h1><br><br>Bootstrap form</h1>
+		<p>Without Bootstrap form builder (normal Bootstrap form with HTML ERB)</p>
+		
+		<h2><br>Basic form</h2>
+		<hr>
 		<form role="form">
 		  <div class="form-group">
 		    <label for="exampleInputEmail1">Email</label>
@@ -89,7 +242,8 @@
 		  <button type="submit" class="btn btn-default">Submit</button>
 		</form>
 		
-		<h2>Inline form</h2>
+		<h2><br>Inline form</h2>
+		<hr>
 		<form class="form-inline" role="form">
 		  <div class="form-group">
 		    <label class="sr-only" for="exampleInputEmail2">Email address</label>
@@ -113,7 +267,8 @@
 		  <button type="submit" class="btn btn-default">Submit</button>
 		</form>
 		
-		<h2>Horizontal form</h2>
+		<h2><br>Horizontal form</h2>
+		<hr>
 		<form class="form-horizontal" role="form">
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
@@ -143,7 +298,8 @@
 		  </div>
 		</form>
 		
-		<h2>Supported controls</h2>
+		<h2><br>Supported controls</h2>
+		<hr>
 		<h3>Inputs</h3>
 		<form role="form">
 		  <div class="form-group">
