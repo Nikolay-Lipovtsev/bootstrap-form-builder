@@ -37,7 +37,7 @@ module BootstrapFormBuilder
      
     class FormBuilder < ActionView::Helpers::FormBuilder
       
-      BASE_FIELD_HELPERS = %w{color_field date_field datetime_field datetime_local_field
+      BASE_CONTROL_HELPERS = %w{color_field date_field datetime_field datetime_local_field
                               email_field month_field number_field password_field phone_field
                               range_field search_field telephone_field text_area text_field time_field
                               url_field week_field}
@@ -57,10 +57,11 @@ module BootstrapFormBuilder
       def label(method, content_or_options = nil, options = {}, &block)
         content_or_options, options = options, nil if block_given?
         options = class_for_base_labeles options
+        return options.to_s
         super(method, (content_or_options || options), options, &block) unless options[:label_disabled]
       end
       
-      BASE_FIELD_HELPERS.each do |helper|
+      BASE_CONTROL_HELPERS.each do |helper|
         define_method(helper) do |field, *args|
           options = args.detect{ |a| a.is_a?(Hash) } || {}
           options = get_base_form_options options
@@ -83,12 +84,13 @@ module BootstrapFormBuilder
         content_tag(:div, class: "form-group") { yield }
       end
       
-      def class_for_base_labeles(options = {})
+      def class_for_base_labeles(options = nil)
         options ||= {}
         invisible = "sr-only" if options[:invisible_label]
         horizontal = "#{ grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) } control-label" if options[:layout] == :horizontal
         horizontal << " #{ grid_system_offset_class(options[:label_offset_col], options[:grid_system]) }" if options[:label_offset_col]
-        options[:class] = [options[:class], invisible, horizontal].compact.join(" ")
+        options[:class] = [options[:class]].compact.join(" ")
+        return options
         options.delete_if{ |k, v| [:invisible_label, :label_col, :label_offset_col].include? k }
       end
       
@@ -97,9 +99,7 @@ module BootstrapFormBuilder
       end
 
       def error_message(field)
-        if has_error?(field)
-          @object.errors[field].collect { |msg| concat(content_tag(:li, msg)) }
-        end
+        @object.errors[field].collect { |msg| concat(content_tag(:li, msg)) } if has_error?(field)
       end
     end
   end
