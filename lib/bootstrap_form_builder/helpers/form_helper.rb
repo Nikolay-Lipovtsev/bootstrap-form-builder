@@ -54,22 +54,24 @@ module BootstrapFormBuilder
 
       alias_method_chain :fields_for, :bootstrap
       
-      def label(method, content_or_options = nil, options = {}, &block)
+      delegate :content_tag, :capture, :concat, to: :@template
+      
+      def label(object_name, content_or_options = nil, options = {}, &block)
         content_or_options, options = options, nil if block_given?
         options = class_for_base_labeles options
-        return options.to_s
-        super(method, (content_or_options || options), options, &block) unless options[:label_disabled]
+        super(object_name, (content_or_options || options), options, &block) unless options[:label_disabled]
       end
       
       BASE_CONTROL_HELPERS.each do |helper|
-        define_method(helper) do |field, *args|
+        define_method(helper) do |object_name, *args|
           options = args.detect{ |a| a.is_a?(Hash) } || {}
           options = get_base_form_options options
+          return options
           box_for_base_controls(options) do
-            options[:control_col] ||= default_date_col if helper == "date_field"
-            options[:placeholder] ||= I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{field}") if options[:placeholder] || options[:invisible_label]
+            options[:placeholder] ||= I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{object_name}") if options[:placeholder] || options[:invisible_label]
             options[:class] = ["form-control", options[:class]].compact.join(" ")
-            super field, options
+              label object_name, options[:label_text], options
+              super object_name, options
           end
         end
       end
@@ -77,7 +79,7 @@ module BootstrapFormBuilder
       private
       
       def get_base_form_options(options = {})
-        BASE_FORM_OPTIONS.each { |name| options[name] ||= @options[name] if @options[name] }
+        BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
       end
       
       def box_for_base_controls(options = {})
@@ -90,15 +92,18 @@ module BootstrapFormBuilder
         horizontal = "#{ grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) } control-label" if options[:layout] == :horizontal
         horizontal << " #{ grid_system_offset_class(options[:label_offset_col], options[:grid_system]) }" if options[:label_offset_col]
         options[:class] = [options[:class]].compact.join(" ")
-        options.delete_if{ |k, v| [:invisible_label, :label_col, :label_offset_col].include? k || v.empty? }
+        options.delete_if do |k, v| 
+          [:invisible_label, :label_col, :label_offset_col].include? k
+          v.empty?
+        end
       end
       
-      def has_error?(field, options = {})
-        @object.respond_to?(:errors) && !(field.nil? || @object.errors[field].empty?) and !(options[:error_disable])
+      def has_error?(object_name, options = {})
+        @object.respond_to?(:errors) && !(field.nil? || @object.errors[object_name].empty?) and !(options[:error_disable])
       end
 
-      def error_message(field)
-        @object.errors[field].collect { |msg| concat(content_tag(:li, msg)) } if has_error?(field)
+      def error_message(object_name)
+        @object.errors[object_name].collect { |msg| concat(content_tag(:li, msg)) } if has_error?(object_name)
       end
     end
   end

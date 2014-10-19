@@ -81,6 +81,7 @@
 		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
 			<%= user_f.label(:name) { content_tag :p, "Test"} %>
 			<%= user_f.label(:name, "Test") %>
+			<%= user_f.text_field(:name, "Test") %>
 			<% #user_f.email_field :name, label_text: "Email" %>
 			<% #user_f.password_field :name, label_text: "Password" %>
 			<% #user_f.check_box :name, label_text: "Check box" %>
