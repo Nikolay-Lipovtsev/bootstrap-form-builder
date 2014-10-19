@@ -90,8 +90,7 @@ module BootstrapFormBuilder
         horizontal = "#{ grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) } control-label" if options[:layout] == :horizontal
         horizontal << " #{ grid_system_offset_class(options[:label_offset_col], options[:grid_system]) }" if options[:label_offset_col]
         options[:class] = [options[:class]].compact.join(" ")
-        return options
-        options.delete_if{ |k, v| [:invisible_label, :label_col, :label_offset_col].include? k }
+        options.delete_if{ |k, v| [:invisible_label, :label_col, :label_offset_col].include? k || v.empty? }
       end
       
       def has_error?(field, options = {})
