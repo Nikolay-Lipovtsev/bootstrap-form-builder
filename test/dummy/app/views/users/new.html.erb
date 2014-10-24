@@ -79,9 +79,10 @@
 		<h2><br>Basic form</h2>
 		<hr>
 		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
-			<%= user_f.label "Email" %>
+			<%= user_f.label :email, "Email" %>
+			<%= user_f.label(:email) { content_tag :p, "Email" } %>
 			<%= user_f.email_field :email, label_text: "Email" %>
-			<%= user_f.password_field :password, label_text: "Password" %>
+			<%= user_f.password_field :password, label_text: "Password", help_block: "This is a help block and in it you can write your help text" %>
 			<% #user_f.check_box :name, label_text: "Check box" %>
 			<%= submit_tag "Submit" %>
 		<% end %>

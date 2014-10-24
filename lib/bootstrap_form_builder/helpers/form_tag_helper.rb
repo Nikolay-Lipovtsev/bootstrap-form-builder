@@ -307,7 +307,8 @@ module BootstrapFormBuilder
       #        </div>
       #      </div>
       #
-      def button_input_tag(value = nil, options = {})
+      def button_input_tag(value = nil, options = nil)
+        options ||= {}
         options[:type] = :button
         submit_tag value, options
       end
