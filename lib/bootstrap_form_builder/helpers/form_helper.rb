@@ -16,6 +16,9 @@ module BootstrapFormBuilder
       # :grid_system
       # :label_disabled
       # :label_offset_col
+      # :label_class
+      # :control_class
+      # :placeholder
       #
       # For example, to render a form with invisible labels
       # The HTML generated for this would be (modulus formatting):
@@ -37,14 +40,16 @@ module BootstrapFormBuilder
      
     class FormBuilder < ActionView::Helpers::FormBuilder
       
-      BASE_CONTROL_HELPERS = %w{color_field date_field datetime_field datetime_local_field
-                              email_field month_field number_field password_field phone_field
-                              range_field search_field telephone_field text_area text_field time_field
-                              url_field week_field}
+      BASE_CONTROL_HELPERS = %w{color_field date_field datetime_field datetime_local_field email_field month_field 
+                                number_field password_field phone_field range_field search_field telephone_field 
+                                text_area text_field time_field url_field week_field}
 
       CHECK_BOX_AND_RADIO_HELPERS = %w{check_box radio_button}
       
-      BASE_FORM_OPTIONS = [:layout, :label_col, :invisible_label, :control_col, :offset_control_col, :grid_system]
+      BASE_FORM_OPTIONS = [:invisible_label, :grid_system, :label_class, :label_col, :layout, :control_class, 
+                          :control_col, :offset_control_col, :offset_label_col]
+      
+      BASE_CONTROL_OPTIONS = [:label_text, :placeholder]
       
       def fields_for_with_bootstrap(record_name, record_object = nil, fields_options = {}, &block)
         fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
@@ -57,43 +62,49 @@ module BootstrapFormBuilder
       delegate :content_tag, :capture, :concat, to: :@template
       
       def label(object_name, content_or_options = nil, options = {}, &block)
-        content_or_options, options = options, nil if block_given?
-        options = class_for_base_labeles options
-        super(object_name, (content_or_options || options), options, &block) unless options[:label_disabled]
+        unless options[:label_disabled]
+          content_or_options, options = options, nil if block_given? #??????????????????????????????????????????????
+          options = class_for_base_labeles options
+          options[:label_text]
+          super object_name, content_or_options, options, &block
+        end
       end
       
       BASE_CONTROL_HELPERS.each do |helper|
         define_method(helper) do |object_name, *args|
           options = args.detect{ |a| a.is_a?(Hash) } || {}
           options = get_base_form_options options
-          return options
-          box_for_base_controls(options) do
-            options[:placeholder] ||= I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{object_name}") if options[:placeholder] || options[:invisible_label]
-            options[:class] = ["form-control", options[:class]].compact.join(" ")
-              label object_name, options[:label_text], options
-              super object_name, options
+          form_group_for_base_controls(options) do
+            options = options.slice(BASE_CONTROL_OPTIONS.push(*BASE_FORM_OPTIONS))
+            bootstrap_label_tag = label object_name, options[:label_text], options
+            options[:placeholder] ||= I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{object_name.to_s}") if options[:placeholder] || options[:invisible_label]
+            options[:class] = ["form-control", options[:control_class]].compact.join(" ")
+            bootstrap_helper_tag = super object_name, options
+            bootstrap_label_tag ? bootstrap_label_tag << bootstrap_helper_tag : bootstrap_helper_tag
           end
         end
       end
       
       private
-      
+    
       def get_base_form_options(options = {})
         BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
+        options
       end
       
-      def box_for_base_controls(options = {})
-        content_tag(:div, class: "form-group") { yield }
+      def form_group_for_base_controls(options = {})
+        options[:class] = ["form-group", options[:class]].compact.join(" ")
+        content_tag(:div, class: options[:class]) { yield }
       end
       
       def class_for_base_labeles(options = nil)
         options ||= {}
         invisible = "sr-only" if options[:invisible_label]
         horizontal = "#{ grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) } control-label" if options[:layout] == :horizontal
-        horizontal << " #{ grid_system_offset_class(options[:label_offset_col], options[:grid_system]) }" if options[:label_offset_col]
-        options[:class] = [options[:class]].compact.join(" ")
+        horizontal << " #{ grid_system_offset_class(options[:label_offset_col], options[:grid_system]) }" if options[:offset_label_col]
+        options[:class] = [options[:label_class]].compact.join(" ")
         options.delete_if do |k, v| 
-          [:invisible_label, :label_col, :label_offset_col].include? k
+          [:invisible_label, :label_class, :label_col, :label_offset_col].include? k
           v.empty?
         end
       end
