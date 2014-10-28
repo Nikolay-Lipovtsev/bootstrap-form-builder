@@ -88,20 +88,21 @@
 		<h2><br>Inline form</h2>
 		<hr>
 		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
-			<%= user_f.email_field :name, label: "Email" %>
-			<%= user_f.password_field :name, label: "Password", input_group: {type: :right_char, value: 'Password'} %>
+			<%= user_f.email_field :name, label: "Enter email" %>
+			<%= user_f.email_field :name, label: "Enter email", input_group: {type: :left_char, value: '@'} %>
+			<%= user_f.password_field :name, label: "Password" %>
 			<%= user_f.check_box :name, label: "Check box" %>
 			<%= user_f.submit "Sabmit" %>
 		<% end %>
 		
 		<h2><br>Horizontal form</h2>
 		<hr>
-		<% #bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
-			<% #user_f.email_field :name, label: "Email" %>
-			<% #user_f.password_field :name, label: "Password" %>
-			<% #user_f.check_box :name, label: "Check box" %>
-			<% #user_f.submit "Sabmit" %>
-		<% #end %>
+		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
+			<%= user_f.email_field :name, label: "Email" %>
+			<%= user_f.password_field :name, label: "Password" %>
+			<%= user_f.check_box :name, label: "Check box" %>
+			<%= user_f.submit "Sabmit" %>
+		<% end %>
 		
 		<h2><br>Supported controls</h2>
 		<hr>

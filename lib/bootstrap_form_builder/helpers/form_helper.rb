@@ -34,7 +34,7 @@ module BootstrapFormBuilder
       private
       
       def disabled(options = {})
-        options[:disabled] ? content_tag(:fieldset, "", disabled: true) { yield } : yield
+        options[:disabled] ? content_tag(:fieldset, disabled: true) { yield } : yield
       end
     end 
      
@@ -49,7 +49,7 @@ module BootstrapFormBuilder
       BASE_FORM_OPTIONS = [:invisible_label, :grid_system, :label_class, :label_col, :layout, :control_class, 
                           :control_col, :offset_control_col, :offset_label_col]
       
-      BASE_CONTROL_OPTIONS = [:label, :help_block, :placeholder, :input_group]
+      BASE_CONTROL_OPTIONS = [:input_group, :label, :help_block, :placeholder]
       
       LABEL_OPTIONS = [:invisible_label, :label, :label_class, :label_col, :label_offset_col]
       
@@ -67,8 +67,10 @@ module BootstrapFormBuilder
         options ||= {}
         content_is_options = content_or_options.is_a? Hash
         options, content_or_options = content_or_options, nil if content_is_options
-        unless options[:label_disabled]
-          options = class_for_base_labeles options
+        options_for_base_controls options unless @options_is_set
+        unless @label_disabled
+          class_value = class_for_label options
+          options[:class] = class_value if class_value
           content_or_options, options = options, nil if content_is_options
           super method_name, content_or_options, options, &block
         end
@@ -77,16 +79,13 @@ module BootstrapFormBuilder
       BASE_CONTROL_HELPERS.each do |helper|
         define_method(helper) do |method_name, *args|
           options = args.detect{ |a| a.is_a?(Hash) } || {}
-          options = get_base_form_options options
+          options_for_base_controls options
           form_group_for_base_controls(options) do
-            options = options.slice(*BASE_CONTROL_OPTIONS.push(*BASE_FORM_OPTIONS))
-            options[:invisible_label] = true if options[:layout] == :inline
-            options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if options[:placeholder] || options[:invisible_label]
-            bootstrap_help_block = help_block options
-            bootstrap_label_tag = label method_name, options[:label], options
-            options[:class] = ["form-control", options[:control_class]].compact.join(" ")
-            bootstrap_helper_tag = input_group_for_base_controls(options) { super method_name, options }
-            [bootstrap_label_tag, bootstrap_helper_tag, bootstrap_help_block].join.html_safe
+            @invisible_label = true if @layout == :inline
+            options[:placeholder] ||= @label || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if @placeholder || @invisible_label
+            options[:class] = ["form-control", @control_class].compact.join(" ")
+            bootstrap_helper_tag = input_group_for_base_controls { super method_name, options }
+            [label(method_name, @label), bootstrap_helper_tag, help_block].join.html_safe
           end
         end
       end
@@ -94,27 +93,50 @@ module BootstrapFormBuilder
       CHECK_BOX_AND_RADIO_HELPERS.each do |helper|
         define_method(helper) do |method_name, *args|
           options = args.detect{ |a| a.is_a?(Hash) } || {}
-          options = get_base_form_options options
+          options_for_base_controls options
           content_tag(:div, class: "checkbox") do
-            #Add options.slice(*BASE_CONTROL_OPTIONS.push(*BASE_FORM_OPTIONS))
-            bootstrap_help_block = help_block options
-            label_content = [super(method_name, options.except(*LABEL_OPTIONS)), options[:label]].join.html_safe
-            bootstrap_label_tag = label method_name, label_content, options
-            [bootstrap_label_tag, bootstrap_help_block].join.html_safe
+            content = [super(method_name), @label].join.html_safe
+            bootstrap_helper_tag = label method_name, content
+            [bootstrap_helper_tag, help_block].join.html_safe
           end
         end
       end
       
       private
       
-      def input_group_for_base_controls(options = nil)
-        if options[:input_group]
-          position, type, value, size = options[:input_group][:type].to_s.sub(/_\w+/, ""), options[:input_group][:type].to_s.sub(/\w+_/, ""), options[:input_group][:value], options[:input_group][:size] if options[:input_group]
+      def options_for_base_controls(options = nil)
+        options ||= {}
+        BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
+        
+        @input_group = options[:input_group]
+        @invisible_label = options[:invisible_label]
+        @form_group_class = options[:class]
+        @grid_system = options[:grid_system]
+        @help_block = options[:help_block]
+        @label = options[:label]
+        @label_class = options[:label_class]
+        @label_col = options[:label_col]
+        @label_disabled = options[:label_disabled]
+        @layout = options[:layout]
+        @control_class = options[:control_class]
+        @control_col = options[:control_col]
+        @offset_control_col = options[:offset_control_col]
+        @offset_label_col = options[:offset_label_col]
+        @options_is_set = true
+        @placeholder = options[:placeholder]
+        
+        options.delete_if { |k, v| [:class, :input_group, :invisible_label, :grid_system, :help_block, :label, 
+                                    :label_class, :label_col, :label_disabled, :layout, :control_class, :control_col, 
+                                    :offset_control_col, :offset_label_col, :placeholder].include? k || v.empty? }
+      end
+      
+      def input_group_for_base_controls
+        if @input_group
+          position, type, value, size = @input_group[:type].to_s.sub(/_\w+/, ""), @input_group[:type].to_s.sub(/\w+_/, ""), @input_group[:value], @input_group[:size] if @input_group
           size = "input-group-#{size}" if size
           content_tag(:div, class: ["input-group", size].compact.join(" ")) do
             spen_left = spen_for_input_group(type, value) if position == "left"
             spen_right = spen_for_input_group(type, value) if position == "right"
-            options.delete(:input_group)
             [spen_left, yield, spen_right].join.html_safe
           end
         else
@@ -130,31 +152,21 @@ module BootstrapFormBuilder
         end
       end
       
-      def get_base_form_options(options = nil)
-        options ||= {}
-        BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
-        options
-      end
-      
       def form_group_for_base_controls(options = {})
-        options[:class] = ["form-group", options[:class]].compact.join(" ")
-        content_tag(:div, class: options[:class]) { yield }
+        @form_group_class = ["form-group", @form_group_class].compact.join(" ")
+        content_tag(:div, class: @form_group_class) { yield }
       end
       
-      def class_for_base_labeles(options = nil)
+      def class_for_label(options = nil)
         options ||= {}
-        invisible = "sr-only" if options[:invisible_label]
-        horizontal = "control-label #{ grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) }" if options[:layout] == :horizontal
-        horizontal = [horizontal, "#{ grid_system_offset_class(options[:label_offset_col], options[:grid_system]) }"].compact.join(" ") if options[:offset_label_col]
-        options[:class] = [options[:label_class], invisible, horizontal].compact.join(" ")
-        options.delete_if do |k, v| 
-          LABEL_OPTIONS.include? k || v.empty?
-        end
+        invisible = "sr-only" if @invisible_label
+        horizontal = "control-label #{ grid_system_class((@label_col || default_horizontal_label_col), @grid_system) }" if @layout == :horizontal
+        horizontal = [horizontal, "#{ grid_system_offset_class(@offset_label_col, @grid_system) }"].compact.join(" ") if @offset_label_col
+        [@label_class, invisible, horizontal].compact.join(" ")
       end
       
-      def help_block(options = nil)
-        content = options.delete(:help_block)
-        content_tag :p, content, class: "help-block" if content
+      def help_block
+        content_tag :p, @help_block, class: "help-block" if @help_block
       end
       
       def has_error?(method_name, options = nil)
