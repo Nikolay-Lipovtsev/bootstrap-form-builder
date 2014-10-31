@@ -1,3 +1,6 @@
+require "bootstrap_form_builder/helpers/form_tag_helper"
+require "bootstrap_form_builder/helpers/grid_system_helper"
+
 module BootstrapFormBuilder
   module Helpers
     module FormHelper
@@ -36,9 +39,12 @@ module BootstrapFormBuilder
       def disabled(options = {})
         options[:disabled] ? content_tag(:fieldset, disabled: true) { yield } : yield
       end
-    end 
+    end
      
     class FormBuilder < ActionView::Helpers::FormBuilder
+      
+      include BootstrapFormBuilder::Helpers::FormTagHelper
+      include BootstrapFormBuilder::Helpers::GridSystemHelper
       
       BASE_CONTROL_HELPERS = %w{color_field date_field datetime_field datetime_local_field email_field month_field 
                                 number_field password_field phone_field range_field search_field telephone_field 
@@ -48,11 +54,11 @@ module BootstrapFormBuilder
       
       BASE_FORM_OPTIONS = [:invisible_label, :grid_system, :label_class, :label_col, :layout, :control_class, 
                           :control_col, :offset_control_col, :offset_label_col]
-      
+    
       BASE_CONTROL_OPTIONS = [:input_group, :label, :help_block, :placeholder]
-      
+    
       LABEL_OPTIONS = [:invisible_label, :label, :label_class, :label_col, :label_offset_col]
-      
+    
       def fields_for_with_bootstrap(record_name, record_object = nil, fields_options = {}, &block)
         fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
         BASE_FORM_OPTIONS.each { |name| fields_options[name] ||= options[name] if options[name] }
@@ -60,54 +66,84 @@ module BootstrapFormBuilder
       end
 
       alias_method_chain :fields_for, :bootstrap
-      
+    
       delegate :content_tag, :capture, :concat, to: :@template
-      
+    
       def label(method_name, content_or_options = nil, options = nil, &block)
         options ||= {}
         content_is_options = content_or_options.is_a? Hash
         options, content_or_options = content_or_options, nil if content_is_options
         options_for_base_controls options unless @options_is_set
         unless @label_disabled
-          class_value = class_for_label options
-          options[:class] = class_value if class_value
+          @label_class = [@label_class, "sr-only"].compact.join(" ") if @invisible_label
+          options[:class] = @label_class if @label_class
           content_or_options, options = options, nil if content_is_options
           super method_name, content_or_options, options, &block
         end
       end
-      
+    
       BASE_CONTROL_HELPERS.each do |helper|
         define_method(helper) do |method_name, *args|
           options = args.detect{ |a| a.is_a?(Hash) } || {}
           options_for_base_controls options
-          form_group_for_base_controls(options) do
+          form_group_for_base_controls(helper) do
+            @label_class = [@label_class, "control-label #{grid_system_class((@label_col || default_horizontal_label_col), @grid_system)}"].compact.join(" ") if @layout == :horizontal
+            @label_class = [@label_class, "#{grid_system_offset_class(@offset_label_col, @grid_system)}"].compact.join(" ") if @offset_label_col
             @invisible_label = true if @layout == :inline
             options[:placeholder] ||= @label || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if @placeholder || @invisible_label
             options[:class] = ["form-control", @control_class].compact.join(" ")
-            bootstrap_helper_tag = input_group_for_base_controls { super method_name, options }
+            bootstrap_helper_tag = control_col_block(helper) { input_group_for_base_controls { super method_name, options }}
             [label(method_name, @label), bootstrap_helper_tag, help_block].join.html_safe
           end
         end
       end
-      
+    
       CHECK_BOX_AND_RADIO_HELPERS.each do |helper|
         define_method(helper) do |method_name, *args|
-          options = args.detect{ |a| a.is_a?(Hash) } || {}
+          options = args.detect { |a| a.is_a?(Hash) } || {}
           options_for_base_controls options
-          content_tag(:div, class: "checkbox") do
-            content = [super(method_name), @label].join.html_safe
-            bootstrap_helper_tag = label method_name, content
-            [bootstrap_helper_tag, help_block].join.html_safe
+          form_group_for_base_controls(helper) do
+            control_col_block(helper) do
+              content_tag(:div, class: "checkbox") do
+                content = [super(method_name), @label].join.html_safe
+                bootstrap_helper_tag = label method_name, content
+                [bootstrap_helper_tag, help_block].join.html_safe
+              end
+            end
           end
         end
       end
       
-      private
+      def button(content_or_options = nil, options = nil, &block)
+        form_group_for_base_controls("btn") do
+          button_tag(content_or_options, options, &block)
+        end
+      end
       
+      def button_link(name = nil, options = nil, html_options = {}, &block)
+        form_group_for_base_controls("btn") do
+          button_link_tag(name, options, html_options, &block)
+        end
+      end
+      
+      def submit(value = nil, options = nil)
+        form_group_for_base_controls("btn") do
+          submit_tag(value, options)
+        end
+      end
+      
+      def button_input(value = nil, options = nil)
+        form_group_for_base_controls("btn") do
+          button_input_tag(value, options)
+        end
+      end
+      
+      private
+    
       def options_for_base_controls(options = nil)
         options ||= {}
         BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
-        
+      
         @input_group = options[:input_group]
         @invisible_label = options[:invisible_label]
         @form_group_class = options[:class]
@@ -124,12 +160,12 @@ module BootstrapFormBuilder
         @offset_label_col = options[:offset_label_col]
         @options_is_set = true
         @placeholder = options[:placeholder]
-        
+      
         options.delete_if { |k, v| [:class, :input_group, :invisible_label, :grid_system, :help_block, :label, 
                                     :label_class, :label_col, :label_disabled, :layout, :control_class, :control_col, 
                                     :offset_control_col, :offset_label_col, :placeholder].include? k || v.empty? }
       end
-      
+    
       def input_group_for_base_controls
         if @input_group
           position, type, value, size = @input_group[:type].to_s.sub(/_\w+/, ""), @input_group[:type].to_s.sub(/\w+_/, ""), @input_group[:value], @input_group[:size] if @input_group
@@ -143,32 +179,38 @@ module BootstrapFormBuilder
           yield
         end
       end
-      
+    
       def spen_for_input_group(type = nil, value = nil)
         if type == "char"
-          content_tag :spen, value, class: "input-group-addon"
+          spen_class = "input-group-addon"
+        elsif type == "button"
+          spen_class = "input-group-btn"
+        end
+        content_tag :spen, value, class: spen_class
+      end
+    
+      def form_group_for_base_controls(helper = nil)
+        if ["check_box", "radio_button", "btn"].include?(helper) && @layout != :horizontal
+          yield
         else
-          #content_tag(:spen, class: "input-group-addon") { }
+          @form_group_class = ["form-group", @form_group_class].compact.join(" ")
+          content_tag(:div, class: @form_group_class) { yield }
         end
       end
-      
-      def form_group_for_base_controls(options = {})
-        @form_group_class = ["form-group", @form_group_class].compact.join(" ")
-        content_tag(:div, class: @form_group_class) { yield }
-      end
-      
-      def class_for_label(options = nil)
-        options ||= {}
-        invisible = "sr-only" if @invisible_label
-        horizontal = "control-label #{ grid_system_class((@label_col || default_horizontal_label_col), @grid_system) }" if @layout == :horizontal
-        horizontal = [horizontal, "#{ grid_system_offset_class(@offset_label_col, @grid_system) }"].compact.join(" ") if @offset_label_col
-        [@label_class, invisible, horizontal].compact.join(" ")
-      end
-      
+    
       def help_block
         content_tag :p, @help_block, class: "help-block" if @help_block
       end
       
+      def control_col_block(helper = nil)
+        if @layout == :horizontal
+          @offset_control_col ||= default_horizontal_label_col if CHECK_BOX_AND_RADIO_HELPERS.include?(helper)
+          bootstrap_col(col: (@control_col || default_horizontal_control_col), grid_system: @grid_system, offset_col: @offset_control_col) { yield }
+        else
+          yield
+        end
+      end
+    
       def has_error?(method_name, options = nil)
         @object.respond_to?(:errors) && !(field.nil? || @object.errors[method_name].empty?) and !(options[:error_disable])
       end
