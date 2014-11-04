@@ -40,7 +40,7 @@ module BootstrapFormBuilder
         options[:disabled] ? content_tag(:fieldset, disabled: true) { yield } : yield
       end
     end
-     
+    
     class FormBuilder < ActionView::Helpers::FormBuilder
       
       include BootstrapFormBuilder::Helpers::FormTagHelper
@@ -84,7 +84,7 @@ module BootstrapFormBuilder
     
       BASE_CONTROL_HELPERS.each do |helper|
         define_method(helper) do |method_name, *args|
-          options = args.detect{ |a| a.is_a?(Hash) } || {}
+          options = args.detect { |a| a.is_a?(Hash) } || {}
           options_for_base_controls options
           form_group_for_base_controls(helper) do
             @label_class = [@label_class, "control-label #{grid_system_class((@label_col || default_horizontal_label_col), @grid_system)}"].compact.join(" ") if @layout == :horizontal
@@ -193,8 +193,8 @@ module BootstrapFormBuilder
         if ["check_box", "radio_button", "btn"].include?(helper) && @layout != :horizontal
           yield
         else
-          @form_group_class = ["form-group", @form_group_class].compact.join(" ")
-          content_tag(:div, class: @form_group_class) { yield }
+          form_group_class = ["form-group", @form_group_class].compact.join(" ")
+          content_tag(:div, class: form_group_class) { yield }
         end
       end
     
