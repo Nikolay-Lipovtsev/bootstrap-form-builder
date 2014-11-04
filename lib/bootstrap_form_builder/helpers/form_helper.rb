@@ -117,25 +117,33 @@ module BootstrapFormBuilder
       def button(content_or_options = nil, options = nil, &block)
         @form_group_class = nil
         form_group_for_base_controls("btn") do
-          button_tag(content_or_options, options, &block)
+          control_col_block("btn") do
+            button_tag content_or_options, options, &block
+          end
         end
       end
       
       def button_link(name = nil, options = nil, html_options = {}, &block)
         form_group_for_base_controls("btn") do
-          button_link_tag(name, options, html_options, &block)
+          control_col_block("btn") do
+            button_link_tag name, options, html_options, &block
+          end
         end
       end
       
       def submit(value = nil, options = nil)
         form_group_for_base_controls("btn") do
-          submit_tag(value, options)
+          control_col_block("btn") do
+            submit_tag value, options
+          end
         end
       end
       
       def button_input(value = nil, options = nil)
         form_group_for_base_controls("btn") do
-          button_input_tag(value, options)
+          control_col_block("btn") do
+            button_input_tag value, options
+          end
         end
       end
       
@@ -205,7 +213,7 @@ module BootstrapFormBuilder
       
       def control_col_block(helper = nil)
         if @layout == :horizontal
-          @offset_control_col ||= default_horizontal_label_col if CHECK_BOX_AND_RADIO_HELPERS.include?(helper)
+          @offset_control_col ||= default_horizontal_label_col if CHECK_BOX_AND_RADIO_HELPERS.include?(helper) || helper == "btn"
           bootstrap_col(col: (@control_col || default_horizontal_control_col), grid_system: @grid_system, offset_col: @offset_control_col) { yield }
         else
           yield

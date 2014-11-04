@@ -5,95 +5,95 @@
 
 		<h2><br>Styles</h2>
 		<hr>
-		<%# button_tag("Default") %>
-		<%# button_tag("Primary", style: "primary") %>
-		<%# button_tag("Success", style: "success") %>
-		<%# button_tag("Info", style: "info") %>
-		<%# button_tag("Warning", style: "warning") %>
-		<%# button_tag("Danger", style: "danger") %>
-		<%# button_tag("Link", style: "link") %>
+		<%= button_tag("Default") %>
+		<%= button_tag("Primary", style: "primary") %>
+		<%= button_tag("Success", style: "success") %>
+		<%= button_tag("Info", style: "info") %>
+		<%= button_tag("Warning", style: "warning") %>
+		<%= button_tag("Danger", style: "danger") %>
+		<%= button_tag("Link", style: "link") %>
 		
 		<h2><br>Sizes</h2>
 		<hr>
 		<p>
-			<%# button_tag("Large button", style: "primary", size: "lg") %>
-			<%# button_tag("Large button", size: "lg") %>
+			<%= button_tag("Large button", style: "primary", size: "lg") %>
+			<%= button_tag("Large button", size: "lg") %>
 		</p>
 		<p>
-			<%# button_tag("Default button", style: "primary") %>
-			<%# button_tag("Default button") %>
+			<%= button_tag("Default button", style: "primary") %>
+			<%= button_tag("Default button") %>
 		</p>
 		<p>
-			<%# button_tag("Small button", style: "primary", size: "sm") %>
-			<%# button_tag("Small button", size: "sm") %>
+			<%= button_tag("Small button", style: "primary", size: "sm") %>
+			<%= button_tag("Small button", size: "sm") %>
 		</p>
 		<p>
-			<%# button_tag("Extra small button", style: "primary", size: "xs") %>
-			<%# button_tag("Extra small button", size: "xs") %>
+			<%= button_tag("Extra small button", style: "primary", size: "xs") %>
+			<%= button_tag("Extra small button", size: "xs") %>
 		</p>
 		<p>
-			<%# button_tag("Block level button", style: "primary", col: 12, size: "lg") %>
+			<%= button_tag("Block level button", style: "primary", col: 12, size: "lg") %>
 		<p>
 		</p>
-			<%# button_tag("Block level button", col: 12, size: "lg") %>
+			<%= button_tag("Block level button", col: 12, size: "lg") %>
 		</p>
 		
 		<h2><br>Active state</h2>
 		<hr>
 		<h3>Button element</h3>
-		<%# button_tag("Primary button", style: "primary", active: true) %>
-		<%# button_tag("Button", active: true) %>
+		<%= button_tag("Primary button", style: "primary", active: true) %>
+		<%= button_tag("Button", active: true) %>
 	
 		<h3>Anchor element</h3>
-		<%# button_link_tag("Primary link", new_user_path, style: "primary", active: true) %>
-		<%# button_link_tag("Link", new_user_path, active: true) %>
+		<%= button_link_tag("Primary link", new_user_path, style: "primary", active: true) %>
+		<%= button_link_tag("Link", new_user_path, active: true) %>
 	
 		<h3>Submit element</h3>
-		<%# submit_tag("Primary submit", style: "primary", active: true) %>
-		<%# submit_tag("Submit", active: true) %>
+		<%= submit_tag("Primary submit", style: "primary", active: true) %>
+		<%= submit_tag("Submit", active: true) %>
 		
 		
 		<h2><br>Disabled state</h2>
 		<hr>
 		<h3>Button element</h3>
-		<%# button_tag("Primary button", style: "primary", disabled: true) %>
-		<%# button_tag("Button", disabled: true) %>
+		<%= button_tag("Primary button", style: "primary", disabled: true) %>
+		<%= button_tag("Button", disabled: true) %>
 	
 		<h3>Anchor element</h3>
-		<%# button_link_tag("Primary link", new_user_path, style: "primary", disabled: true) %>
-		<%# button_link_tag("Link", new_user_path, disabled: true) %>
+		<%= button_link_tag("Primary link", new_user_path, style: "primary", disabled: true) %>
+		<%= button_link_tag("Link", new_user_path, disabled: true) %>
 	
 		<h3>Submit element</h3>
-		<%# submit_tag("Primary submit", style: "primary", disabled: true) %>
-		<%# submit_tag("Submit", disabled: true) %>
+		<%= submit_tag("Primary submit", style: "primary", disabled: true) %>
+		<%= submit_tag("Submit", disabled: true) %>
 		
 		<h2><br>Button tags</h2>
 		<hr>
-		<%# button_link_tag("Link", new_user_path) %>
-		<%# button_tag("Button") %>
-		<%# button_input_tag("Input") %>
-		<%# submit_tag("Submit") %>
+		<%= button_link_tag("Link", new_user_path) %>
+		<%= button_tag("Button") %>
+		<%= button_input_tag("Input") %>
+		<%= submit_tag("Submit") %>
 		
 		<h1><br><br>Bootstrap form</h1>
 		<p>With Bootstrap form builder</p>
 		<h2><br>Basic form</h2>
 		<hr>
-		<%# bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
-			<%# user_f.email_field :email, label: "Email" %>
-			<%# user_f.password_field :password, label: "Password" %>
-			<%# user_f.check_box :email, label: "Check box" %>
-			<%# submit_tag "Submit" %>
-		<%# end %>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.email_field :email, label: "Email" %>
+			<%= user_f.password_field :password, label: "Password" %>
+			<%= user_f.check_box :email, label: "Check box" %>
+			<%= user_f.submit "Submit" %>
+		<% end %>
 		
 		<h2><br>Inline form</h2>
 		<hr>
-		<%# bootstrap_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
-			<%# user_f.email_field :name, label: "Enter email" %>
-			<%# user_f.email_field :name, label: "Enter email", input_group: {type: :left_char, value: "@"} %>
-			<%# user_f.password_field :name, label: "Password" %>
-			<%# user_f.check_box :name, label: "Check box" %>
-			<%# user_f.submit "Sabmit" %>
-		<%# end %>
+		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
+			<%= user_f.email_field :name, label: "Enter email" %>
+			<%= user_f.email_field :name, label: "Enter email", input_group: {type: :left_char, value: "@"} %>
+			<%= user_f.password_field :name, label: "Password" %>
+			<%= user_f.check_box :name, label: "Check box" %>
+			<%= user_f.submit "Sabmit" %>
+		<% end %>
 		
 		<h2><br>Horizontal form</h2>
 		<hr>
