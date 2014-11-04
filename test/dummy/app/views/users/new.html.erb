@@ -99,8 +99,8 @@
 		<hr>
 		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
 			<%= user_f.email_field :name, label: "Email" %>
-			<%= user_f.password_field :name, label: "Password", class: "test" %>
-			<%= user_f.check_box :name, label: "Check box" %>
+			<%= user_f.password_field :name, label: "Password" %>
+			<%= user_f.check_box :name, label: "Check box", class: "test" %>
 			<%= user_f.button "Sabmit" %>
 		<% end %>
 		

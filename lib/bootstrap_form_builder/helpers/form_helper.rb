@@ -115,6 +115,7 @@ module BootstrapFormBuilder
       end
       
       def button(content_or_options = nil, options = nil, &block)
+        @form_group_class = nil
         form_group_for_base_controls("btn") do
           button_tag(content_or_options, options, &block)
         end
@@ -143,7 +144,7 @@ module BootstrapFormBuilder
       def options_for_base_controls(options = nil)
         options ||= {}
         BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
-      
+        
         @input_group = options[:input_group]
         @invisible_label = options[:invisible_label]
         @form_group_class = options[:class]
