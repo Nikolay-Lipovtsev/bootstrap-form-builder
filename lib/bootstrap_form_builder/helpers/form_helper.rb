@@ -91,8 +91,8 @@ module BootstrapFormBuilder
             @label_class = [@label_class, "#{grid_system_offset_class(@offset_label_col, @grid_system)}"].compact.join(" ") if @offset_label_col
             @invisible_label = true if @layout == :inline
             options[:placeholder] ||= @label || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if @placeholder || @invisible_label
-            options[:class] = ["form-control", @control_class].compact.join(" ")
-            bootstrap_helper_tag = control_col_block(helper) { input_group_for_base_controls { super method_name, options }}
+            options[:class] = ["form-control", @control_class, @size].compact.join(" ")
+            bootstrap_helper_tag = control_col_block(helper) { input_group_for_base_controls { super(method_name, options) << (icon_tag || "") }}
             [label(method_name, @label), bootstrap_helper_tag, help_block].join.html_safe
           end
         end
@@ -104,7 +104,7 @@ module BootstrapFormBuilder
           options_for_base_controls options
           form_group_for_base_controls(helper) do
             control_col_block(helper) do
-              content_tag(:div, class: "checkbox") do
+              content_tag(:div, class: helper.to_s.gsub("_", "").gsub("button", "")) do
                 content = [super(method_name), @label].join.html_safe
                 bootstrap_helper_tag = label method_name, content
                 [bootstrap_helper_tag, help_block].join.html_safe
@@ -114,11 +114,25 @@ module BootstrapFormBuilder
         end
       end
       
+      def control_static(content_or_options = nil, options = nil, &block)
+        options = content_or_options
+        options_for_base_controls options
+        form_group_for_base_controls(helper) do
+          @label_class = [@label_class, "control-label #{grid_system_class((@label_col || default_horizontal_label_col), @grid_system)}"].compact.join(" ") if @layout == :horizontal
+          @label_class = [@label_class, "#{grid_system_offset_class(@offset_label_col, @grid_system)}"].compact.join(" ") if @offset_label_col
+          @invisible_label = true if @layout == :inline
+          options[:placeholder] ||= @label || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if @placeholder || @invisible_label
+          options[:class] = ["form-control", @control_class, @size].compact.join(" ")
+          bootstrap_helper_tag = control_col_block(helper) { input_group_for_base_controls { super(method_name, options) << (icon_tag || "") }}
+          [label(method_name, @label), bootstrap_helper_tag, help_block].join.html_safe
+        end
+      end
+      
       def button(content_or_options = nil, options = nil, &block)
         @form_group_class = nil
         form_group_for_base_controls("btn") do
           control_col_block("btn") do
-            button_tag content_or_options, options, &block
+            @template.button_tag content_or_options, options, &block
           end
         end
       end
@@ -126,7 +140,7 @@ module BootstrapFormBuilder
       def button_link(name = nil, options = nil, html_options = {}, &block)
         form_group_for_base_controls("btn") do
           control_col_block("btn") do
-            button_link_tag name, options, html_options, &block
+            @template.button_link_tag name, options, html_options, &block
           end
         end
       end
@@ -134,7 +148,7 @@ module BootstrapFormBuilder
       def submit(value = nil, options = nil)
         form_group_for_base_controls("btn") do
           control_col_block("btn") do
-            submit_tag value, options
+            @template.submit_tag value, options
           end
         end
       end
@@ -142,7 +156,7 @@ module BootstrapFormBuilder
       def button_input(value = nil, options = nil)
         form_group_for_base_controls("btn") do
           control_col_block("btn") do
-            button_input_tag value, options
+            @template.button_input_tag value, options
           end
         end
       end
@@ -153,26 +167,34 @@ module BootstrapFormBuilder
         options ||= {}
         BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
         
+        options[:disabled] = "disabled" if options[:disabled]
+        options[:readonly] = "readonly" if options[:readonly]
+        @control_class = options[:control_class]
+        @control_col = options[:control_col]
+        @size = options[:size] ? "input-#{options[:size]}" : nil
+        @form_group_class = options[:class]
+        @form_group_size = options[:form_group_size] ? "form-group-#{options[:form_group_size]}" : nil
+        @style = options[:style] ? "has-#{options[:style]}" : nil
+        @help_block = options[:help_block]
+        @icon = options[:icon]
         @input_group = options[:input_group]
         @invisible_label = options[:invisible_label]
-        @form_group_class = options[:class]
         @grid_system = options[:grid_system]
-        @help_block = options[:help_block]
         @label = options[:label]
         @label_class = options[:label_class]
         @label_col = options[:label_col]
         @label_disabled = options[:label_disabled]
         @layout = options[:layout]
-        @control_class = options[:control_class]
-        @control_col = options[:control_col]
         @offset_control_col = options[:offset_control_col]
         @offset_label_col = options[:offset_label_col]
         @options_is_set = true
         @placeholder = options[:placeholder]
       
-        options.delete_if { |k, v| [:class, :input_group, :invisible_label, :grid_system, :help_block, :label, 
-                                    :label_class, :label_col, :label_disabled, :layout, :control_class, :control_col, 
-                                    :offset_control_col, :offset_label_col, :placeholder].include? k || v.empty? }
+        options.delete_if { |k, v| [:class, :control_class, :control_col, :size, :form_group_class, 
+                                    :form_group_size, :style, :help_block, :icon, :input_group, :invisible_label,  
+                                    :grid_system, :label, :label_class, :label_col, :label_disabled, :layout, 
+                                    :control_class, :control_col, :offset_control_col, :offset_label_col, 
+                                    :placeholder].include? k || v.empty? }
       end
     
       def input_group_for_base_controls
@@ -180,8 +202,8 @@ module BootstrapFormBuilder
           position, type, value, size = @input_group[:type].to_s.sub(/_\w+/, ""), @input_group[:type].to_s.sub(/\w+_/, ""), @input_group[:value], @input_group[:size] if @input_group
           size = "input-group-#{size}" if size
           content_tag(:div, class: ["input-group", size].compact.join(" ")) do
-            spen_left = spen_for_input_group(type, value) if position == "left"
-            spen_right = spen_for_input_group(type, value) if position == "right"
+            spen_left = input_group_spen(type, value) if position == "left"
+            spen_right = input_group_spen(type, value) if position == "right"
             [spen_left, yield, spen_right].join.html_safe
           end
         else
@@ -189,7 +211,7 @@ module BootstrapFormBuilder
         end
       end
     
-      def spen_for_input_group(type = nil, value = nil)
+      def input_group_spen(type = nil, value = nil)
         if type == "char"
           spen_class = "input-group-addon"
         elsif type == "button"
@@ -197,12 +219,23 @@ module BootstrapFormBuilder
         end
         content_tag :spen, value, class: spen_class
       end
+      
+      def icon_tag
+        if @icon
+          if @icon.include? "fa-"
+            content_tag(:spen, class: "glyphicon form-control-feedback") { content_tag :i, "", class: "#{@icon}" }
+          else
+            content_tag :spen, "", class: "glyphicon glyphicon-#{@icon} form-control-feedback"
+          end
+        end
+      end
     
       def form_group_for_base_controls(helper = nil)
         if ["check_box", "radio_button", "btn"].include?(helper) && @layout != :horizontal
-          yield
+          @style && helper != "btn" ? content_tag(:div, class: @style) { yield } : yield
         else
-          form_group_class = ["form-group", @form_group_class].compact.join(" ")
+          @form_group_class = [@form_group_class, "has-feedback"].compact.join(" ") if @icon
+          form_group_class = ["form-group", @form_group_class, @form_group_size, @style].compact.join(" ")
           content_tag(:div, class: form_group_class) { yield }
         end
       end
@@ -213,7 +246,7 @@ module BootstrapFormBuilder
       
       def control_col_block(helper = nil)
         if @layout == :horizontal
-          @offset_control_col ||= default_horizontal_label_col if CHECK_BOX_AND_RADIO_HELPERS.include?(helper) || helper == "btn"
+          @offset_control_col ||= default_horizontal_label_col if ["check_box", "radio_button", "btn"].include?(helper)
           bootstrap_col(col: (@control_col || default_horizontal_control_col), grid_system: @grid_system, offset_col: @offset_control_col) { yield }
         else
           yield
