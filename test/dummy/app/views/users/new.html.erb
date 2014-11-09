@@ -99,8 +99,8 @@
 		<hr>
 		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
 			<%= user_f.email_field :name, label: "Email" %>
-			<%= user_f.password_field :name, label: "Password", form_group_size: "lg" %>
-			<%= user_f.check_box :name, label: "Check box", class: "test" %>
+			<%= user_f.password_field :name, label: "Password" %>
+			<%= user_f.check_box :name, label: "Check box" %>
 			<%= user_f.button "Sabmit" %>
 		<% end %>
 		
@@ -130,19 +130,20 @@
 		<h4>Default (stacked)</h4>
 		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
 			<%= user_f.check_box :name, label: "Check box" %>
-			<%= user_f.check_box :name, label: "Check box" %>
-			<%= user_f.radio_button :name, label: "Radio button" %>
-			<%= user_f.radio_button :name, label: "Radio button" %>
-			<%= user_f.radio_button :name, label: "Radio button" %>
+			<%= user_f.check_box :name, label: "Check box", disabled: true %>
+			<%= user_f.radio_button :name, 0, label: "Radio button", checked: true %>
+			<%= user_f.radio_button :name, 1, label: "Radio button" %>
+			<%= user_f.radio_button :name, 2, label: "Radio button", disabled: true %>
 		<% end %>
 		<h4>Inline checkboxes and radios</h4>
-		<% #bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
-			<% #user_f.check_box :name, label: "Check box", inline: true %>
-			<% #user_f.check_box :name, label: "Check box", inline: true %>
-			<% #user_f.radio_button :name, label: "Radio button", inline: true %>
-			<% #user_f.radio_button :name, label: "Radio button", inline: true %>
-			<% #user_f.radio_button :name, label: "Radio button", inline: true %>
-		<% #end %>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.check_box :name, label: "Check box", inline: true %>
+			<%= user_f.check_box :name, label: "Check box", inline: true %>
+			<%= user_f.radio_button :name, 0, label: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, 1, label: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, 2, label: "Radio button", inline: true %>
+			<%= user_f.collection_check_boxes :user_id, Users.all, :id, :name %>
+		<% end %>
 	</div>
 	
 	<div class="col-md-6">
