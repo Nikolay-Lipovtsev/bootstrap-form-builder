@@ -131,11 +131,31 @@ module BootstrapFormBuilder
       def collection_check_boxes(method, collection, value_method, text_method, options = {})
         form_group("check_box") do
           options[:form_group_disabled] = true
+          inputs = ""
           collection.each do |object|
+            options[:checked] = true if options[:checked] == object.send(value_method)
             options[:label] = object.send text_method
             checked_value = value_method ? object.send(value_method) : "1"
-            check_box method, options, checked_value
+            inputs << check_box(method, options, checked_value)
           end
+          inputs.html_safe
+        end
+      end
+      
+      def collection_radio_buttons(method, collection, value_method, text_method, options = {})
+        form_group("radio_button") do
+          options[:form_group_disabled] = true
+          inputs = ""
+          checked, options[:checked] = options[:checked], nil if options[:checked]
+          collection.each do |object|
+            if checked
+              options[:checked] = true if checked.to_s == object.send(value_method).to_s
+            end
+            options[:label] = object.send text_method
+            tag_value = value_method ? object.send(value_method) : "1"
+            inputs << radio_button(method, tag_value, options)
+          end
+          inputs.html_safe
         end
       end
       
