@@ -138,15 +138,18 @@
 		<% end %>
 		
 		<h4>Inline checkboxes and radios</h4>
-		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
 			<%= user_f.check_box :name, label: "Check box", inline: true %>
 			<%= user_f.check_box :name, label: "Check box", inline: true %>
-			<%= user_f.radio_button :name, 0, label: "Radio button", inline: true %>
-			<%= user_f.radio_button :name, 1, label: "Radio button", inline: true %>
-			<%= user_f.radio_button :name, 2, label: "Radio button", inline: true %>
-			<%= user_f.collection_check_boxes :id, @users, :id, :name %>
-			<%= user_f.collection_radio_buttons :id, @users, :id, :name %>
-			<%= user_f.collection_radio_buttons :email, @users, :id, :email, checked: 0 %>
+			<%= user_f.bootstrap_form_group do %>
+				<%= user_f.radio_button :name, 0, label: "Radio button", inline: true, form_group_disabled: true %>
+				<%= user_f.radio_button :name, 1, label: "Radio button", inline: true, form_group_disabled: true %>
+				<%= user_f.radio_button :name, 2, label: "Radio button", inline: true, form_group_disabled: true %>
+			<% end %>
+			<%= user_f.collection_check_boxes :id, User.all, :id, :name %>
+			<%= user_f.collection_radio_buttons :id, User.all, :id, :name %>
+			<%= user_f.collection_radio_buttons :email, User.all, :id, :email, checked: true %>
+			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, {include_blank: 'None'}) %>
 		<% end %>
 	</div>
 	
