@@ -138,18 +138,66 @@
 		<% end %>
 		
 		<h4>Inline checkboxes and radios</h4>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.check_box :name, label: "Check box", inline: true %>
+			<%= user_f.check_box :name, label: "Check box", inline: true %>
+			<%= user_f.radio_button :name, 0, label: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, 1, label: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, 2, label: "Radio button", inline: true %>
+		<% end %>
+		
+		<h3>Selects</h3>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, { include_blank: "None" }) %>
+		<% end %>
+		
+		<h2><br>Static control</h2>
+		<hr>
 		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
-			<%= user_f.check_box :name, label: "Check box", inline: true %>
-			<%= user_f.check_box :name, label: "Check box", inline: true %>
-			<%= user_f.bootstrap_form_group do %>
-				<%= user_f.radio_button :name, 0, label: "Radio button", inline: true, form_group_disabled: true %>
-				<%= user_f.radio_button :name, 1, label: "Radio button", inline: true, form_group_disabled: true %>
-				<%= user_f.radio_button :name, 2, label: "Radio button", inline: true, form_group_disabled: true %>
-			<% end %>
-			<%= user_f.collection_check_boxes :id, User.all, :id, :name %>
-			<%= user_f.collection_radio_buttons :id, User.all, :id, :name %>
-			<%= user_f.collection_radio_buttons :email, User.all, :id, :email, checked: true %>
-			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, {include_blank: 'None'}) %>
+			<%= user_f.control_static :email, "email@example.com", label: "Email" %>
+			<%= user_f.password_field :password, label: "Password" %>
+		<% end %>
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Disabled input here...", invisible_label: true, disabled: true %>
+		<% end %>
+		
+		<h2><br>Readonly state</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Readonly input here...", invisible_label: true, disabled: true %>
+		<% end %>
+		
+		<h2><br>Validation states</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Input with success", style: "success" %>
+			<%= user_f.text_field :email, label: "Input with warning", style: "warning" %>
+			<%= user_f.text_field :email, label: "Input with error", style: "error" %>
+			<%= user_f.check_box :name, label: "Checkbox with success", style: "success" %>
+			<%= user_f.check_box :name, label: "Checkbox with warning", style: "warning" %>
+			<%= user_f.check_box :name, label: "Checkbox with error", style: "error" %>
+		<% end %>
+		
+		<h2><br>With optional icons</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Input with success", style: "success", icon: "ok" %>
+			<%= user_f.text_field :email, label: "Input with warning", style: "warning", icon: "warning-sign" %>
+			<%= user_f.text_field :email, label: "Input with error", style: "error", icon: "remove" %>
+		<% end %>
+		
+		<h2><br>Control sizing</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: ".input-lg", invisible_label: true, size: "lg" %>
+			<%= user_f.text_field :email, label: "Default input", invisible_label: true %>
+			<%= user_f.text_field :email, label: ".input-sm", invisible_label: true, size: "sm" %>
+			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, { include_blank: "None", size: "lg" }) %>
+			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, { include_blank: "None" }) %>
+			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, { include_blank: "None", size: "sm" }) %>
 		<% end %>
 	</div>
 	
@@ -440,13 +488,112 @@
 		  <option>4</option>
 		  <option>5</option>
 		</select>
-		<br>
-		<select multiple class="form-control">
-		  <option>1</option>
-		  <option>2</option>
-		  <option>3</option>
-		  <option>4</option>
-		  <option>5</option>
-		</select>
+		
+		<h2><br>Static control</h2>
+		<hr>
+		<form class="form-horizontal" role="form">
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">Email</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static">email@example.com</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-10">
+		      <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+		    </div>
+		  </div>
+		</form>
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+		
+		<h2><br>Readonly state</h2>
+		<hr>
+		<input class="form-control" type="text" placeholder="Readonly input here..." readonly>
+		
+		<h2><br>Validation states</h2>
+		<hr>
+		<div class="form-group has-success">
+		  <label class="control-label" for="inputSuccess1">Input with success</label>
+		  <input type="text" class="form-control" id="inputSuccess1">
+		</div>
+		<div class="form-group has-warning">
+		  <label class="control-label" for="inputWarning1">Input with warning</label>
+		  <input type="text" class="form-control" id="inputWarning1">
+		</div>
+		<div class="form-group has-error">
+		  <label class="control-label" for="inputError1">Input with error</label>
+		  <input type="text" class="form-control" id="inputError1">
+		</div>
+		<div class="has-success">
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox" id="checkboxSuccess" value="option1">
+		      Checkbox with success
+		    </label>
+		  </div>
+		</div>
+		<div class="has-warning">
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox" id="checkboxWarning" value="option1">
+		      Checkbox with warning
+		    </label>
+		  </div>
+		</div>
+		<div class="has-error">
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox" id="checkboxError" value="option1">
+		      Checkbox with error
+		    </label>
+		  </div>
+		</div>
+		
+		<h2><br>With optional icons</h2>
+		<hr>
+		<div class="form-group has-success has-feedback">
+		  <label class="control-label" for="inputSuccess2">Input with success</label>
+		  <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
+		  <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		  <span id="inputSuccess2Status" class="sr-only">(success)</span>
+		</div>
+		<div class="form-group has-warning has-feedback">
+		  <label class="control-label" for="inputWarning2">Input with warning</label>
+		  <input type="text" class="form-control" id="inputWarning2" aria-describedby="inputWarning2Status">
+		  <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>
+		  <span id="inputWarning2Status" class="sr-only">(warning)</span>
+		</div>
+		<div class="form-group has-error has-feedback">
+		  <label class="control-label" for="inputError2">Input with error</label>
+		  <input type="text" class="form-control" id="inputError2" aria-describedby="inputError2Status">
+		  <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+		  <span id="inputError2Status" class="sr-only">(error)</span>
+		</div>
+		
+		<h2><br>Control sizing</h2>
+		<hr>
+		<div class="form-group">
+			<input class="form-control input-lg" type="text" placeholder=".input-lg">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" placeholder="Default input">
+		</div>
+		<div class="form-group">
+			<input class="form-control input-sm" type="text" placeholder=".input-sm">
+		</div>
+		
+		<div class="form-group">
+			<select class="form-control input-lg">...</select>
+		</div>
+		<div class="form-group">
+			<select class="form-control">...</select>
+		</div>
+		<div class="form-group">
+			<select class="form-control input-sm">...</select>
+		</div>
 	</div>
 </div>
