@@ -198,6 +198,7 @@
 			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, { include_blank: "None", size: "lg" }) %>
 			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, { include_blank: "None" }) %>
 			<%= user_f.select(:id, User.all.collect {|u| [ u.name, u.id ] }, { include_blank: "None", size: "sm" }) %>
+			<%= user_f.collection_check_boxes :id, User.all, :id, :name %>
 		<% end %>
 	</div>
 	

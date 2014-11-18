@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validates :email,
             presence: true,
             format: { with: VALID_EMAIL_REGEX,
-                      message: "Not valid format" },
+                      message: "not valid format" },
             length: { maximum: 10,
-                      message: "Not valid length" }
+                      message: "not valid length" }
 end
