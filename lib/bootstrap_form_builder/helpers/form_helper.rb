@@ -29,7 +29,7 @@ module BootstrapFormBuilder
         options[:html] ||= {}
         options[:html][:role] = "form"
         options[:builder] ||= BootstrapFormBuilder::Helpers::FormBuilder
-        options[:html][:class] = [options[:html][:class], "form-#{options[:layout].to_s}"].compact.join(" ") if options[:layout]
+        options[:html][:class] = ["form-#{options[:layout].to_s}", options[:html][:class]].compact.join(" ") if options[:layout]
         
         disabled(options) { form_for object, options, &block }
       end
@@ -52,7 +52,7 @@ module BootstrapFormBuilder
       
       COLLECTION_HELPERS = %w{collection_check_boxes collection_radio_buttons}
       
-      BASE_FORM_OPTIONS = [:invisible_label, :grid_system, :label_class, :label_col, :layout, :control_class, 
+      BASE_FORM_OPTIONS = [:invisible_label, :form_group_disabled, :grid_system, :label_class, :label_col, :layout, :control_class, 
                           :control_col, :offset_control_col, :offset_label_col]
     
       BASE_CONTROL_OPTIONS = [:input_group, :label, :help_block, :placeholder]
@@ -73,13 +73,15 @@ module BootstrapFormBuilder
                 :submit_tag, to: :@template
       
       def label(method_name, content_or_options = nil, options = {}, &block)
-        helper = "label"
         content_is_options = content_or_options.is_a? Hash
         options, content_or_options = content_or_options, nil if content_is_options
-        base_options helper, method_name, options
         unless options[:label_disabled]
+          options[:invisible_label] = true if options[:layout] == :inline
+          options[:label_class] = [options[:label_class], "control-label"].compact.join(" ")
+          options[:label_class] = [options[:label_class], "#{grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system])}"].compact.join(" ") if options[:layout] == :horizontal
+          options[:label_class] = [options[:label_class], "#{grid_system_offset_class(options[:offset_label_col], options[:grid_system])}"].compact.join(" ") if options[:offset_label_col]
           options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label]
-          options[:class] = ["control-label", options[:label_class]].compact.join(" ")
+          options[:class] = options[:label_class]
           options = options.slice(:class)
           content_or_options, options = options, nil if content_is_options
           super method_name, content_or_options, options, &block
@@ -89,12 +91,7 @@ module BootstrapFormBuilder
       BASE_CONTROL_HELPERS.each do |helper|
         define_method(helper) do |method_name, *args|
           options = args.detect { |a| a.is_a?(Hash) } || {}
-          base_options helper, method_name, options
-          form_group_builder(helper, options) do
-            options[:label_class] = [options[:label_class], "control-label #{grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system])}"].compact.join(" ") if options[:layout] == :horizontal
-            options[:label_class] = [options[:label_class], "#{grid_system_offset_class(options[:offset_label_col], options[:grid_system])}"].compact.join(" ") if options[:offset_label_col]
-            options[:invisible_label] = true if options[:layout] == :inline
-            options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if options[:placeholder] || options[:invisible_label]
+          form_group_builder(helper, method_name, options) do
             options[:class] = ["form-control", options[:control_class], options[:size]].compact.join(" ")
             error_tag = error_message method_name, options
             helper_tag = super method_name, options.slice(:class, :disabled, :placeholder, :readonly, :rows)
@@ -107,31 +104,25 @@ module BootstrapFormBuilder
       def control_static(method_name, content_or_options = nil, options = nil, &block)
         helper = "control_static"
         options, content_or_options = content_or_options, nil if block_given?
-        base_options helper, method_name, options
-        form_group_builder(helper, options) do
-          options[:label_class] = [options[:label_class], "control-label #{grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system])}"].compact.join(" ") if options[:layout] == :horizontal
-          options[:label_class] = [options[:label_class], "#{grid_system_offset_class(options[:offset_label_col], options[:grid_system])}"].compact.join(" ") if options[:offset_label_col]
-          options[:invisible_label] = true if options[:layout] == :inline
-          options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if options[:placeholder] || options[:invisible_label]
+        form_group_builder(helper, method_name, options) do
           options[:class] = ["form-control-static", options[:control_class], options[:size]].compact.join(" ")
-          content = block_given? ? yield : content_or_options
-          helper_tag = col_block(helper, options) { content_tag(:p, content, options.slice(:class)) }
+          helper_tag = block_given? ? yield : content_or_options
+          helper_tag = col_block(helper, options) { content_tag(:p, helper_tag, options.slice(:class)) }
           [label(method_name, options[:label], options), helper_tag, help_block(options)].join.html_safe
         end
       end
       
       def check_box(method_name, options = {}, checked_value = "1", unchecked_value = "0")
         helper = "check_box"
-        base_options helper, method_name, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, method_name, options) do
           col_block(helper, options) do
-            block_for_check_box_and_radio_button("checkbox", options) do
+            block_for_check_box_and_radio_button(helper, options) do
               options[:class] = options[:control_class] if options[:control_class]
-              content = super method_name, options.slice(:class, :checked, :disabled, :multiple, :readonly), checked_value, unchecked_value
-              content = [content, options[:label]].join.html_safe
+              helper_tag = super method_name, options.slice(:class, :checked, :disabled, :multiple, :readonly), checked_value, unchecked_value
+              helper_tag = [helper_tag, options[:label]].join.html_safe
+              options[:label_class] = [options[:label_class], "#{helper.to_s.gsub(/(_)+(button)?/, "")}-inline"].compact.join(" ") if options[:inline]
               options[:class] = options[:label_class]
-              options[:class] = [options[:class], "checkbox-inline"].compact.join(" ") if options[:inline]
-              helper_tag = label_tag nil, content, options.slice(:class)
+              helper_tag = label_tag nil, helper_tag, options.slice(:class)
               error_tag = error_message method_name, options
               [helper_tag, help_block(options), error_tag].join.html_safe
             end
@@ -141,16 +132,15 @@ module BootstrapFormBuilder
       
       def radio_button(method_name, tag_value, options = {})
         helper = "radio_button"
-        base_options helper, method_name, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, method_name, options) do
           col_block(helper, options) do
-            block_for_check_box_and_radio_button("radio", options) do
+            block_for_check_box_and_radio_button(helper, options) do
               options[:class] = options[:control_class] if options[:control_class]
-              content = super method_name, tag_value, options.slice(:class, :checked, :disabled, :multiple, :readonly)
-              content = [content, options[:label]].join.html_safe
+              helper_tag = super method_name, tag_value, options.slice(:class, :checked, :disabled, :multiple, :readonly)
+              helper_tag = [helper_tag, options[:label]].join.html_safe
+              options[:label_class] = [options[:label_class], "#{helper.to_s.gsub(/(_)+(button)?/, "")}-inline"].compact.join(" ") if options[:inline]
               options[:class] = options[:label_class]
-              options[:class] = [options[:class], "radio-inline"].compact.join(" ") if options[:inline]
-              helper_tag = label_tag nil, content, options.slice(:class)
+              helper_tag = label_tag nil, helper_tag, options.slice(:class)
               error_tag = error_message method_name, options
               [helper_tag, help_block(options), error_tag].join.html_safe
             end
@@ -161,8 +151,7 @@ module BootstrapFormBuilder
       COLLECTION_HELPERS.each do |helper|
         define_method(helper) do |method_name, collection, value_method, text_method, *args|
           options = args.detect { |a| a.is_a?(Hash) } || {}
-          base_options helper, method_name, options
-          form_group_builder(helper, options) do
+          form_group_builder(helper, method_name, options) do
             col_block(helper, options) do
               helper_tags, options[:form_group_disabled], options[:col_block_disabled] = "", true, true
               checked, options[:checked] = options[:checked], nil if options[:checked]
@@ -184,8 +173,7 @@ module BootstrapFormBuilder
       
       def select(method_name, choices = nil, options = {}, html_options = {}, &block)
         helper = "select"
-        base_options helper, method_name, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, method_name, options) do
           col_block(helper, options) do
             html_options[:class] = ["form-control", options[:control_class], options[:size]].compact.join(" ")
             helper_tag = super method_name, choices, options, html_options, &block
@@ -199,8 +187,7 @@ module BootstrapFormBuilder
         helper = "btn"
         content_is_options = content_or_options.is_a? Hash
         options, content_or_options = content_or_options, nil if content_is_options
-        base_options helper, nil, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, nil, options) do
           col_block(helper, options) do
             options.delete(:class)
             options[:class] = options[:control_class] if options[:control_class]
@@ -213,8 +200,7 @@ module BootstrapFormBuilder
       
       def button_link(name = nil, options = {}, html_options = {}, &block)
         helper = "btn"
-        base_options helper, nil, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, nil, options) do
           col_block(helper, options) do
             options.delete(:class)
             options[:class] = options[:control_class] if options[:control_class]
@@ -226,8 +212,7 @@ module BootstrapFormBuilder
       
       def submit(value = nil, options = {})
         helper = "btn"
-        base_options helper, nil, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, nil, options) do
           col_block(helper, options) do
             options.delete(:class)
             options[:class] = options[:control_class] if options[:control_class]
@@ -240,8 +225,7 @@ module BootstrapFormBuilder
       def button_input(value = nil, options = {})
         helper = "btn"
         content_is_options = content_or_options.is_a? Hash
-        base_options helper, nil, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, nil, options) do
           col_block(helper, options) do
             options.delete(:class)
             options[:class] = options[:control_class] if options[:control_class]
@@ -253,14 +237,26 @@ module BootstrapFormBuilder
       
       def form_group(options = {})
         helper = "form_group_builder"
-        base_options helper, nil, options
-        form_group_builder(helper, options) do
+        form_group_builder(helper, nil, options) do
           col_block(helper, options) { yield }
         end
       end
       
       private
-    
+      
+      def form_group_builder(helper, method_name, options = {})
+        base_options helper, method_name, options
+        if options[:form_group_disabled]
+          yield
+        elsif ["check_box", "radio_button", "btn"].include?(helper) && options[:layout] != :horizontal
+          options[:style] && helper != "btn" ? content_tag(:div, class: options[:style]) { yield } : yield
+        else
+          options[:form_group_class] = ["has-feedback", options[:form_group_class]].compact.join(" ") if options[:icon]
+          options[:class] = ["form-group", options[:form_group_class], options[:form_group_size], options[:style]].compact.join(" ")
+          content_tag(:div, options.slice(:class)) { yield }
+        end
+      end
+      
       def base_options(helper, method_name, options = {})
         options ||= {}
         BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
@@ -271,19 +267,21 @@ module BootstrapFormBuilder
         options[:form_group_size] = "form-group-#{options[:form_group_size]}" if options[:form_group_size]
         options[:size] = "input-#{options.delete(:size)}" if options[:size] && helper != "btn"
         options[:style] = "has-#{options.delete(:style)}" if options[:style] && helper != "btn"
-        options[:style] = "has-error" if has_error?(method_name, options) && !(["btn", "control_static", "label"].include?(helper)) 
+        options[:style] = "has-error" if has_error?(method_name, options) && !(["btn", "control_static", "label"].include?(helper))
+        options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options[:invisible_label]) && [*BASE_CONTROL_HELPERS].include?(helper)
       end
       
-      def form_group_builder(helper = nil, options = {})
-        if options[:form_group_disabled]
+      def col_block(helper = nil, options = {})
+        if options[:col_block_disabled] || options[:form_group_disabled] || options[:layout] != :horizontal
           yield
-        elsif ["check_box", "radio_button", "btn"].include?(helper) && options[:layout] != :horizontal
-          options[:style] && helper != "btn" ? content_tag(:div, class: options[:style]) { yield } : yield
         else
-          options[:form_group_class] = [options[:form_group_class], "has-feedback"].compact.join(" ") if options[:icon]
-          options[:class] = ["form-group", options[:form_group_class], options[:form_group_size], options[:style]].compact.join(" ")
-          content_tag(:div, options.slice(:class)) { yield }
+          options[:offset_control_col] ||= default_horizontal_label_col if ["check_box", "radio_button", "btn", "select", "collection"].include?(helper)
+          bootstrap_col(col: (options[:control_col] || default_horizontal_control_col), grid_system: options[:grid_system], offset_col: options[:offset_control_col]) { yield }
         end
+      end
+      
+      def block_for_check_box_and_radio_button(helper, options = {})
+        options[:inline] ? yield : content_tag(:div, class: helper.to_s.gsub(/(_)+(button)?/, "")) { yield }
       end
 
       def input_group_for_base_controls(options = {})
@@ -298,10 +296,6 @@ module BootstrapFormBuilder
         else
           yield
         end
-      end
-      
-      def block_for_check_box_and_radio_button(helper, options = {})
-        options[:inline] ? yield : content_tag(:div, class: helper) { yield }
       end
     
       def input_group_spen(type = nil, value = nil)
@@ -325,15 +319,6 @@ module BootstrapFormBuilder
     
       def help_block(options = {})
         content_tag :p, options[:help_block], class: "help-block" if options[:help_block]
-      end
-      
-      def col_block(helper = nil, options = {})
-        if options[:col_block_disabled] || options[:form_group_disabled] || options[:layout] != :horizontal
-          yield
-        else
-          options[:offset_control_col] ||= default_horizontal_label_col if ["check_box", "radio_button", "btn", "select", "collection"].include?(helper)
-          bootstrap_col(col: (options[:control_col] || default_horizontal_control_col), grid_system: options[:grid_system], offset_col: options[:offset_control_col]) { yield }
-        end
       end
     
       def has_error?(method_name, options = {})

@@ -1,4 +1,9 @@
 class UsersController < ApplicationController
+  
+  def test_helper
+    @user = User.new
+  end
+
   def test
     @user = User.new
   end
