@@ -1,5 +1,5 @@
-<div class="row">
-	<div class="col-md-offset-3 col-md-6">
+<div class = "row">
+	<div class = "col-md-offset-3 col-md-6">
 		<h1>Bootstrap form helper</h1>
 		<p>Test for all supported controls</p>
 
@@ -7,8 +7,25 @@
 		<hr>
 		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
 			<%= user_f.text_field :name %>
-			<%= user_f.text_field :name, label: "My name" %>
-			<%= user_f.text_field :name, label: "My name", control_col: 3 %>
+			<%= user_f.text_field :name, label: "With my label text" %>
+			<%= user_f.text_field :name, label: "With invisible label", invisible_label: true %>
+			<%= user_f.text_field :name, label: "Without label", label_disabled: true %>
+			<%= user_f.text_field :name, label: "With my label class", label_class: "my-label-class" %>
+			<%= user_f.text_field :name, label: "With my control class", control_class: "my-control-class" %>
+			<%= user_f.text_field :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
+			<%= user_f.text_field :name, label: "Disabled field", disabled: true %>
+			<%= user_f.text_field :name, label: "Readonly field", readonly: true %>
+			<%= user_f.text_field :name, label: "With my placeholder", placeholder: "My text" %>
+			<%= user_f.text_field :name, label: "Control size", size: "lg" %>
+			<%= user_f.text_field :name, label: "Control style", style: "success" %>
+			<%= user_f.text_field :name, label: "With icon", icon: "ok" %>
+			<%= user_f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
+			
+			
+			<%= user_f.text_field :name, label: "With md grid system", grid_system: "md" %>
+			<%= bootstrap_row_with_col(col: 4) do %>
+				<%= user_f.text_field :name, label: "My name" %>
+			<% end %>
 		<% end %>
 	</div>
 </div>

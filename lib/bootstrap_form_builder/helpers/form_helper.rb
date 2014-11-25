@@ -77,7 +77,7 @@ module BootstrapFormBuilder
         options, content_or_options = content_or_options, nil if content_is_options
         unless options[:label_disabled]
           options[:invisible_label] = true if options[:layout] == :inline
-          options[:label_class] = [options[:label_class], "control-label"].compact.join(" ")
+          options[:label_class] = ["control-label", options[:label_class]].compact.join(" ")
           options[:label_class] = [options[:label_class], "#{grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system])}"].compact.join(" ") if options[:layout] == :horizontal
           options[:label_class] = [options[:label_class], "#{grid_system_offset_class(options[:offset_label_col], options[:grid_system])}"].compact.join(" ") if options[:offset_label_col]
           options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label]
@@ -251,7 +251,6 @@ module BootstrapFormBuilder
         elsif ["check_box", "radio_button", "btn"].include?(helper) && options[:layout] != :horizontal
           options[:style] && helper != "btn" ? content_tag(:div, class: options[:style]) { yield } : yield
         else
-          options[:form_group_class] = ["has-feedback", options[:form_group_class]].compact.join(" ") if options[:icon]
           options[:class] = ["form-group", options[:form_group_class], options[:form_group_size], options[:style]].compact.join(" ")
           content_tag(:div, options.slice(:class)) { yield }
         end
@@ -261,14 +260,15 @@ module BootstrapFormBuilder
         options ||= {}
         BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
         
-        options[:disabled] = "disabled" if options[:disabled]
-        options[:readonly] = "readonly" if options[:readonly]
         options[:checked] = "checked" if options[:checked]
-        options[:form_group_size] = "form-group-#{options[:form_group_size]}" if options[:form_group_size]
+        options[:disabled] = "disabled" if options[:disabled]
+        options[:form_group_class] = ["has-feedback", options[:form_group_class]].compact.join(" ") if options[:icon]
+        options[:form_group_size] = "form-group-#{options.delete(:size)}" if options[:size] && options[:layout] == :horizontal
+        options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options[:invisible_label]) && [*BASE_CONTROL_HELPERS].include?(helper)
+        options[:readonly] = "readonly" if options[:readonly]
         options[:size] = "input-#{options.delete(:size)}" if options[:size] && helper != "btn"
         options[:style] = "has-#{options.delete(:style)}" if options[:style] && helper != "btn"
         options[:style] = "has-error" if has_error?(method_name, options) && !(["btn", "control_static", "label"].include?(helper))
-        options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options[:invisible_label]) && [*BASE_CONTROL_HELPERS].include?(helper)
       end
       
       def col_block(helper = nil, options = {})
@@ -276,7 +276,8 @@ module BootstrapFormBuilder
           yield
         else
           options[:offset_control_col] ||= default_horizontal_label_col if ["check_box", "radio_button", "btn", "select", "collection"].include?(helper)
-          bootstrap_col(col: (options[:control_col] || default_horizontal_control_col), grid_system: options[:grid_system], offset_col: options[:offset_control_col]) { yield }
+          options[:control_col] ||= default_horizontal_control_col
+          bootstrap_col(col: (options[:control_col]), grid_system: options[:grid_system], offset_col: options[:offset_control_col]) { yield }
         end
       end
       
