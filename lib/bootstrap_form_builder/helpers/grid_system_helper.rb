@@ -51,6 +51,7 @@ module BootstrapFormBuilder
       #
       # bootstrap_col(col: 6, grid_system: :lg) { "Test" }
       # # => <div class="col-lg-6">Test</div>
+      #
       def bootstrap_col(options = {})
         options[:class] = [grid_system_class(options[:col], options[:grid_system]), 
                           grid_system_offset_class(options[:offset_col], options[:grid_system]), 
@@ -94,16 +95,19 @@ module BootstrapFormBuilder
       #          Test
       #        </div>
       #      </div>
+      #
       def bootstrap_row_with_col(options = {})
         bootstrap_row(options) { bootstrap_col(options.slice(:col, :offset_col, :grid_system)) { yield }}
       end
       
       # Creates a HTML class with Bootstrap col.
+      #
       def grid_system_class(col = nil, grid_system = nil)
         "col-#{(grid_system || default_grid_system).to_s}-#{col}" if col
       end
       
       # Creates a HTML class with Bootstrap offset-col.
+      #
       def grid_system_offset_class(col = nil, grid_system = nil)
         "col-#{(grid_system || default_grid_system).to_s}-offset-#{col}" if col
       end

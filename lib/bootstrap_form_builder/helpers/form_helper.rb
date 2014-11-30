@@ -3,28 +3,59 @@ require "bootstrap_form_builder/helpers/grid_system_helper"
 
 module BootstrapFormBuilder
   module Helpers
+    # Provides a number of methods for creating a simple forms with Bootstrap style
     module FormHelper
-      # Options for form
+      
+      # Creates a form tag with bootstrap class.
+      # === Options
+      # You can use only symbols for the attribute names.
+      # 
+      # <tt>:control_class</tt> this value will be added to the value of the class controls all controls of the form.
       #
-      # :layout
-      # :builder
-      # :disabled
+      # <tt>:control_col</tt> if you set a value in the range grid system for Bootstrap (1..12), the default size of the
+      # controls in all the form fields will be changed. The default size (2) value is not set. This only applies to
+      # horizontal forms.
       #
-      # Common form options for all controls in form:
+      # <tt>:disabled</tt> if set to true, it should generate fieldset tag with a disabled option around fields inside
+      # form tag.
       #
-      # :label_col
-      # :control_col
-      # :offset_control_col
-      # :invisible_label
-      # :grid_system
-      # :label_disabled
-      # :label_offset_col
-      # :label_class
-      # :control_class
-      # :placeholder
+      # <tt>:invisible_label</tt> if set to true, then this should make invisible all the labels in all fields within
+      # the form, except for checkboxes and radio buttons.
       #
-      # For example, to render a form with invisible labels
-      # The HTML generated for this would be (modulus formatting):
+      # <tt>:form_group_disabled</tt> if set to true, then this should disable all forms groups in all fields within
+      # the form.
+      #
+      # <tt>:grid_system</tt> if set the value of a range of grid system for Bootstrap ("xs", "sm", "md", "lg"), 
+      # the default size of all fields will be changed to the set. For default grid system ("md") value is not set.
+      #
+      # <tt>:label_class</tt> this value will be added to the value of the class labels all labels of the form.
+      #
+      # <tt>:label_col</tt> if you set a value in the range grid system for Bootstrap (1..12), the default size of the
+      # labels in all the form fields will be changed. The default size (2) value is not set. This only applies to
+      # horizontal forms.
+      #
+      # <tt>:layout</tt> this value sets the style for the form Bootstrap. By default, this is the basic style, but it
+      # can be set in :horizontal or :inline.
+      #
+      # <tt>:offset_control_col</tt> if you set a value in the range grid system for Bootstrap (1..12), the default
+      # offset_col of the controls in all the form fields will be changed. The default offset_col (2) value is not set.
+      # This only applies to horizontal forms.
+      #
+      # <tt>:offset_label_col</tt> if you set a value in the range grid system for Bootstrap (1..12), the default
+      # offset_col of the lables in all the form fields will be changed. The default offset_col (2) value is not set.
+      # This only applies to horizontal forms.
+      #
+      # === Examples
+      # bootstrap_form_for @user, url: { action: "create" } do |user_f|
+      #   ...
+      # end
+      # # => <form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post" role="form">
+      #         <div style="display:none"><input name="utf8" type="hidden" value="✓">
+      #           <input name="authenticity_token" type="hidden" value="/xWrku1kPx13LYYoYonTdATfLTkWQHTHL+eATnqoQQg=">
+      #           ...
+      #         </div>
+      #      </form>
+      #
       def bootstrap_form_for(object, options = {}, &block)
         options[:html] ||= {}
         options[:html][:role] = "form"
@@ -41,6 +72,7 @@ module BootstrapFormBuilder
       end
     end
     
+    # Provides a number of methods for creating a simple fields with Bootstrap style
     class FormBuilder < ActionView::Helpers::FormBuilder
       
       include BootstrapFormBuilder::Helpers::FormTagHelper
@@ -52,8 +84,8 @@ module BootstrapFormBuilder
       
       COLLECTION_HELPERS = %w{collection_check_boxes collection_radio_buttons}
       
-      BASE_FORM_OPTIONS = [:invisible_label, :form_group_disabled, :grid_system, :label_class, :label_col, :layout, 
-                          :control_class, :control_col, :offset_control_col, :offset_label_col]
+      BASE_FORM_OPTIONS = [:control_class, :control_col, :invisible_label, :form_group_disabled, :grid_system, 
+                          :label_class, :label_col, :layout, :offset_control_col, :offset_label_col]
     
       BASE_CONTROL_OPTIONS = [:input_group, :label, :help_block, :placeholder]
     
@@ -265,7 +297,7 @@ module BootstrapFormBuilder
         options[:disabled] = "disabled" if options[:disabled]
         options[:form_group_class] = ["has-feedback", options[:form_group_class]].compact.join(" ") if options[:icon]
         options[:form_group_size] = "form-group-#{options.delete(:size)}" if options[:size] && options[:layout] == :horizontal
-        options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options[:invisible_label]) && [*BASE_CONTROL_HELPERS].include?(helper)
+        options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options[:invisible_label] || options[:layout] == :inline) && [*BASE_CONTROL_HELPERS].include?(helper)
         options[:readonly] = "readonly" if options[:readonly]
         options[:size] = "input-#{options.delete(:size)}" if options[:size] && helper != "btn"
         options[:style] = "has-#{options.delete(:style)}" if options[:style] && helper != "btn"
@@ -276,7 +308,7 @@ module BootstrapFormBuilder
         if options[:col_block_disabled] || options[:layout] != :horizontal
           yield
         else
-          options[:offset_control_col] ||= default_horizontal_label_col if options[:label_disabled] || ["check_box", "radio_button", "btn", "collection"].include?(helper)
+          options[:offset_control_col] ||= default_horizontal_label_col if ["check_box", "radio_button", "btn", "collection"].include?(helper)
           options[:control_col] ||= default_horizontal_control_col
           bootstrap_col(col: (options[:control_col]), grid_system: options[:grid_system], offset_col: options[:offset_control_col]) { yield }
         end
