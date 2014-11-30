@@ -52,8 +52,8 @@ module BootstrapFormBuilder
       
       COLLECTION_HELPERS = %w{collection_check_boxes collection_radio_buttons}
       
-      BASE_FORM_OPTIONS = [:invisible_label, :form_group_disabled, :grid_system, :label_class, :label_col, :layout, :control_class, 
-                          :control_col, :offset_control_col, :offset_label_col]
+      BASE_FORM_OPTIONS = [:invisible_label, :form_group_disabled, :grid_system, :label_class, :label_col, :layout, 
+                          :control_class, :control_col, :offset_control_col, :offset_label_col]
     
       BASE_CONTROL_OPTIONS = [:input_group, :label, :help_block, :placeholder]
     
@@ -76,11 +76,10 @@ module BootstrapFormBuilder
         content_is_options = content_or_options.is_a? Hash
         options, content_or_options = content_or_options, nil if content_is_options
         unless options[:label_disabled]
-          options[:invisible_label] = true if options[:layout] == :inline
           options[:label_class] = ["control-label", options[:label_class]].compact.join(" ")
           options[:label_class] = [options[:label_class], "#{grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system])}"].compact.join(" ") if options[:layout] == :horizontal
           options[:label_class] = [options[:label_class], "#{grid_system_offset_class(options[:offset_label_col], options[:grid_system])}"].compact.join(" ") if options[:offset_label_col]
-          options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label]
+          options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label] || options[:layout] == :inline
           options[:class] = options[:label_class]
           options = options.slice(:class)
           content_or_options, options = options, nil if content_is_options
@@ -93,10 +92,12 @@ module BootstrapFormBuilder
           options = args.detect { |a| a.is_a?(Hash) } || {}
           form_group_builder(helper, method_name, options) do
             options[:class] = ["form-control", options[:control_class], options[:size]].compact.join(" ")
-            error_tag = error_message method_name, options
+            icon_tag = icon_block(options) || ""
+            help_tag = help_block(options) || ""
+            error_tag = error_message(method_name, options) || ""
             helper_tag = super method_name, options.slice(:class, :disabled, :placeholder, :readonly, :rows)
-            helper_tag = col_block(helper, options) { input_group_for_base_controls(options) { helper_tag << (icon_tag(options) || "") } << (error_tag || "") }
-            [label(method_name, options[:label], options), helper_tag, help_block(options)].join.html_safe
+            helper_tag = col_block(helper, options) { [input_group_for_base_controls(options) { [helper_tag, icon_tag].join.html_safe }, help_tag, error_tag].join.html_safe }
+            [label(method_name, options[:label], options), helper_tag].join.html_safe
           end
         end
       end
@@ -171,15 +172,15 @@ module BootstrapFormBuilder
         end
       end
       
-      def select(method_name, choices = nil, options = {}, html_options = {}, &block)
+      def select(method_name, choices = nil, select_options = {}, options = {}, &block)
         helper = "select"
         form_group_builder(helper, method_name, options) do
-          col_block(helper, options) do
-            html_options[:class] = ["form-control", options[:control_class], options[:size]].compact.join(" ")
-            helper_tag = super method_name, choices, options, html_options, &block
-            error_tag = error_message method_name, options
-            [helper_tag, help_block(options), error_tag].join.html_safe
-          end
+          options[:class] = ["form-control", options[:control_class], options[:size]].compact.join(" ")
+          help_tag = help_block(options) || ""
+          error_tag = error_message(method_name, options) || ""
+          helper_tag = super method_name, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
+          helper_tag = col_block(helper, options) { [helper_tag, help_tag, error_tag].join.html_safe }
+          [label(method_name, options[:label], options), helper_tag].join.html_safe
         end
       end
       
@@ -272,10 +273,10 @@ module BootstrapFormBuilder
       end
       
       def col_block(helper = nil, options = {})
-        if options[:col_block_disabled] || options[:form_group_disabled] || options[:layout] != :horizontal
+        if options[:col_block_disabled] || options[:layout] != :horizontal
           yield
         else
-          options[:offset_control_col] ||= default_horizontal_label_col if ["check_box", "radio_button", "btn", "select", "collection"].include?(helper)
+          options[:offset_control_col] ||= default_horizontal_label_col if options[:label_disabled] || ["check_box", "radio_button", "btn", "collection"].include?(helper)
           options[:control_col] ||= default_horizontal_control_col
           bootstrap_col(col: (options[:control_col]), grid_system: options[:grid_system], offset_col: options[:offset_control_col]) { yield }
         end
@@ -308,7 +309,7 @@ module BootstrapFormBuilder
         content_tag :spen, value, class: spen_class
       end
       
-      def icon_tag(options = {})
+      def icon_block(options = {})
         if options[:icon]
           if options[:icon].include? "fa-"
             content_tag(:spen, class: "glyphicon form-control-feedback") { content_tag :i, "", class: "#{options[:icon]}" }

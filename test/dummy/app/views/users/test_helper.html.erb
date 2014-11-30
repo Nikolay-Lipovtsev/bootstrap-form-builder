@@ -5,6 +5,7 @@
 
 		<h2><br>Base controls</h2>
 		<hr>
+		<h3><br>Basic form</h3>
 		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
 			<%= user_f.text_field :name %>
 			<%= user_f.text_field :name, label: "With my label text" %>
@@ -20,11 +21,29 @@
 			<%= user_f.text_field :name, label: "Control style", style: "success" %>
 			<%= user_f.text_field :name, label: "With icon", icon: "ok" %>
 			<%= user_f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
-			
+			<%= bootstrap_row_with_col(col: 4) do %>
+				<%= user_f.text_field :name, label: "Control col" %>
+			<% end %>
+			<%= bootstrap_row do %>
+				<%= bootstrap_col(col: 3) { user_f.text_field :name, label: "Group of fields" } %>
+				<%= bootstrap_col(col: 3) { user_f.text_field :name, label: "Different sizes" } %>
+				<%= bootstrap_col(col: 6) { user_f.text_field :name, label: "More than one field in row" } %>
+			<% end %>
+		<% end %>
+		
+		<h3><br>Horizontal form</h3>
+		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal, label_col: 4, control_col: 8 do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :name, label: "With my label text" %>
+			<%= user_f.text_field :name, label: "With invisible label", invisible_label: true %>
+			<%= user_f.text_field :name, label: "Control size", size: "lg" %>
 			
 			<%= user_f.text_field :name, label: "With md grid system", grid_system: "md" %>
-			<%= bootstrap_row_with_col(col: 4) do %>
-				<%= user_f.text_field :name, label: "My name" %>
+			<%= user_f.form_group(col_block_disabled: true) do %>
+				<%= user_f.text_field :name, label: "Group of fields", form_group_disabled: true, control_col: 3 %>
+				<%= user_f.text_field :name, form_group_disabled: true, control_col: 3, label_disabled: true %>
+				<%= user_f.select(:id, User.all.collect { |u| [u.name, u.id] }, { include_blank: "None" }, { form_group_disabled: true, control_col: 2, label_disabled: true }) %>
+			
 			<% end %>
 		<% end %>
 	</div>
