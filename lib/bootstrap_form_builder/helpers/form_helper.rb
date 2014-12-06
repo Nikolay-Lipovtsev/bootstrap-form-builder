@@ -46,21 +46,95 @@ module BootstrapFormBuilder
       # This only applies to horizontal forms.
       #
       # === Examples
-      # bootstrap_form_for @user, url: { action: "create" } do |user_f|
+      # <%= bootstrap_form_for @user do |user_f| %>
       #   ...
-      # end
+      # <% end %>
+      #
       # # => <form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post" role="form">
-      #         <div style="display:none"><input name="utf8" type="hidden" value="✓">
-      #           <input name="authenticity_token" type="hidden" value="/xWrku1kPx13LYYoYonTdATfLTkWQHTHL+eATnqoQQg=">
-      #           ...
-      #         </div>
+      #        <div style="display:none">
+      #          <input name="utf8" type="hidden" value="✓">
+      #          <input name="authenticity_token" type="hidden" value="...=">
+      #        </div>
+      #        ...
       #      </form>
       #
+      # <%= bootstrap_form_for @user, html: {class: "my-class"} do |user_f| %>
+      #   ...
+      # <% end %>
+      #
+      # # => <form accept-charset="UTF-8" action="/users" class="my-class" id="new_user" method="post" role="form">
+      #        <div style="display:none">
+      #          <input name="utf8" type="hidden" value="✓">
+      #          <input name="authenticity_token" type="hidden" value="...=">
+      #        </div>
+      #        ...
+      #      </form>
+      #
+      # <%= bootstrap_form_for @user, control_class: "my-control-class", label_class: "my-label-class" do |user_f| %>
+      #   <%= user_f.text_field :name %>
+			#   <%= user_f.text_field :email %>
+      # <% end %>
+      #
+      # # => <form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post" role="form">
+      #        <div style="display:none">
+      #          <input name="utf8" type="hidden" value="✓">
+      #          <input name="authenticity_token" type="hidden" value="...=">
+      #        </div>
+			#        <div class="form-group">
+      #          <label class="control-label my-label-class" for="user_name">Name</label>
+      #          <input class="form-control my-control-class" id="user_name" name="user[name]" type="text">
+      #        </div>
+			#        <div class="form-group">
+      #          <label class="control-label my-label-class" for="user_email">Email</label>
+      #          <input class="form-control my-control-class" id="user_email" name="user[email]" type="text">
+      #        </div>
+      #      </form>
+      #
+      # <%= bootstrap_form_for @user, control_col: 2, offset_control_col: 3, label_col: 4, offset_label_col: 3, 
+      # layout: :horizontal do |user_f| %>
+			#   <%= user_f.text_field :name %>
+			#   <%= user_f.text_field :email %>
+		  # <% end %>
+      #
+      # # => <form accept-charset="UTF-8" action="/users" class="form-horizontal" id="new_user" method="post"
+      # role="form">
+      #        <div style="display:none">
+      #          <input name="utf8" type="hidden" value="✓">
+      #          <input name="authenticity_token" type="hidden" value="...=">
+      #        </div>
+			#        <div class="form-group">
+      #          <label class="control-label col-sm-4 col-sm-offset-3" for="user_name">Name</label>
+      #          <div class="col-sm-2 col-sm-offset-3">
+      #            <input class="form-control" id="user_name" name="user[name]" type="text">
+      #          </div>
+      #        </div>
+			#        <div class="form-group">
+      #          <label class="control-label col-sm-4 col-sm-offset-3" for="user_email">Email</label>
+      #          <div class="col-sm-2 col-sm-offset-3">
+      #            <input class="form-control" id="user_email" name="user[email]" type="text">
+      #          </div>
+      #        </div>
+      #      </form>
+      #
+      # <%= bootstrap_form_for @user, layout: :horizontal do |user_f| %>
+      #   ...
+      # <% end %>
+      #
+      # # => <form accept-charset="UTF-8" action="/users" class="form-horizontal" id="new_user" method="post"
+      # role="form">
+      #         <div style="display:none">
+      #           <input name="utf8" type="hidden" value="✓">
+      #           <input name="authenticity_token" type="hidden" value="...=">
+      #         </div>
+      #         ...
+      #      </form>
+      #
+      # 
       def bootstrap_form_for(object, options = {}, &block)
         options[:html] ||= {}
         options[:html][:role] = "form"
-        options[:builder] ||= BootstrapFormBuilder::Helpers::FormBuilder
         options[:html][:class] = ["form-#{options[:layout].to_s}", options[:html][:class]].compact.join(" ") if options[:layout]
+        options[:builder] ||= BootstrapFormBuilder::Helpers::FormBuilder
         
         disabled(options) { form_for object, options, &block }
       end

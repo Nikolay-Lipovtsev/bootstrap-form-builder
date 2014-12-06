@@ -5,20 +5,95 @@
 		
 		<h2><br>Forms</h2>
 		<hr>
+		<h3><br>Control class</h3>
+		<%= bootstrap_form_for @user, control_class: "my-control-class" do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Control col</h3>
+		<%= bootstrap_form_for @user, control_col: 2, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Disabled</h3>
+		<%= bootstrap_form_for @user, disabled: true do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Invisible label</h3>
+		<%= bootstrap_form_for @user, invisible_label: true do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Form group disabled</h3>
+		<%= bootstrap_form_for @user, form_group_disabled: true do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Grid system</h3>
+		<%= bootstrap_form_for @user, grid_system: "md", layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Label class</h3>
+		<%= bootstrap_form_for @user, label_class: "my-label-class" do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Label col</h3>
+		<%= bootstrap_form_for @user, label_col: 2, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Layout</h3>
+		<%= bootstrap_form_for @user, layout: :horizontal do |user_f| %>
+			...
+		<% end %>
+		
+		<h3><br>Offset control col</h3>
+		<%= bootstrap_form_for @user, offset_control_col: 2, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		
+		
+		
+		
 		<h3><br>Basic form</h3>
-		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+		<%= bootstrap_form_for @user do |user_f| %>
 			<%= user_f.text_field :name %>
 			<%= user_f.text_field :email %>
 		<% end %>
 		
 		<h3><br>Horizontal form</h3>
-		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
+		<%= bootstrap_form_for @user, layout: :horizontal do |user_f| %>
 			<%= user_f.text_field :name %>
 			<%= user_f.text_field :email %>
 		<% end %>
 		
 		<h3><br>Inline form</h3>
-		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
+		<%= bootstrap_form_for @user, layout: :inline do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Classes</h3>
+		<%= bootstrap_form_for @user, control_class: "my-control-class", label_class: "my-label-class" do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Bootstrap col</h3>
+		<%= bootstrap_form_for @user, control_col: 2, offset_control_col: 3, label_col: 4, offset_label_col: 3, layout: :horizontal do |user_f| %>
 			<%= user_f.text_field :name %>
 			<%= user_f.text_field :email %>
 		<% end %>
@@ -26,7 +101,7 @@
 		<h2><br>Base controls</h2>
 		<hr>
 		<h3><br>Basic form</h3>
-		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+		<%= bootstrap_form_for @user do |user_f| %>
 			<%= user_f.text_field :name %>
 			<%= user_f.text_field :name, label: "With my label text" %>
 			<%= user_f.text_field :name, label: "With invisible label", invisible_label: true %>
@@ -53,13 +128,13 @@
 		<% end %>
 		
 		<h3><br>Inline form</h3>
-		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
+		<%= bootstrap_form_for @user, layout: :inline do |user_f| %>
 			<%= user_f.text_field :name %>
 			<%= user_f.text_field :name, label: "With my label text" %>
 		<% end %>
 		
 		<h3><br>Horizontal form</h3>
-		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal, label_col: 4, control_col: 8 do |user_f| %>
+		<%= bootstrap_form_for @user, layout: :horizontal, label_col: 4, control_col: 8 do |user_f| %>
 			<%= user_f.text_field :name %>
 			<%= user_f.text_field :name, label: "With my label text" %>
 			<%= user_f.text_field :name, label: "With invisible label", invisible_label: true %>
