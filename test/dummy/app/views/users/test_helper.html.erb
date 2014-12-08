@@ -1,0 +1,151 @@
+<div class = "row">
+	<div class = "col-md-offset-3 col-md-6">
+		<h1>Bootstrap form helper</h1>
+		<p>Test for all supported controls</p>
+		
+		<h2><br>Forms</h2>
+		<hr>
+		<h3><br>Control class</h3>
+		<%= bootstrap_form_for @user, control_class: "my-control-class" do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Control col</h3>
+		<%= bootstrap_form_for @user, control_col: 2, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Disabled</h3>
+		<%= bootstrap_form_for @user, disabled: true do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Invisible label</h3>
+		<%= bootstrap_form_for @user, invisible_label: true do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Form group disabled</h3>
+		<%= bootstrap_form_for @user, form_group_disabled: true do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Grid system</h3>
+		<%= bootstrap_form_for @user, grid_system: "md", layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Label class</h3>
+		<%= bootstrap_form_for @user, label_class: "my-label-class" do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Label col</h3>
+		<%= bootstrap_form_for @user, label_col: 2, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Layout</h3>
+		<%= bootstrap_form_for @user, layout: :horizontal do |user_f| %>
+			...
+		<% end %>
+		
+		<h3><br>Offset control col</h3>
+		<%= bootstrap_form_for @user, offset_control_col: 2, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		
+		
+		
+		
+		<h3><br>Basic form</h3>
+		<%= bootstrap_form_for @user do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Horizontal form</h3>
+		<%= bootstrap_form_for @user, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Inline form</h3>
+		<%= bootstrap_form_for @user, layout: :inline do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Classes</h3>
+		<%= bootstrap_form_for @user, control_class: "my-control-class", label_class: "my-label-class" do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h3><br>Bootstrap col</h3>
+		<%= bootstrap_form_for @user, control_col: 2, offset_control_col: 3, label_col: 4, offset_label_col: 3, layout: :horizontal do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :email %>
+		<% end %>
+		
+		<h2><br>Base controls</h2>
+		<hr>
+		<h3><br>Basic form</h3>
+		<%= bootstrap_form_for @user do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :name, label: "With my label text" %>
+			<%= user_f.text_field :name, label: "With invisible label", invisible_label: true %>
+			<%= user_f.text_field :name, label: "Without label", label_disabled: true %>
+			<%= user_f.text_field :name, label: "With my label class", label_class: "my-label-class" %>
+			<%= user_f.text_field :name, label: "With my control class", control_class: "my-control-class" %>
+			<%= user_f.text_field :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
+			<%= user_f.text_field :name, label: "Disabled field", disabled: true %>
+			<%= user_f.text_field :name, label: "Readonly field", readonly: true %>
+			<%= user_f.text_field :name, label: "With my placeholder", placeholder: "My text" %>
+			<%= user_f.text_field :name, label: "Control size", size: "lg" %>
+			<%= user_f.text_field :name, label: "Control style", style: "success" %>
+			<%= user_f.text_field :name, label: "With icon", icon: "ok" %>
+			<%= user_f.text_field :name, label: "With help block", help_block: "Text for help block" %>
+			<%= user_f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
+			<%= bootstrap_row_with_col(col: 4) do %>
+				<%= user_f.text_field :name, label: "Control col" %>
+			<% end %>
+			<%= bootstrap_row do %>
+				<%= bootstrap_col(col: 3) { user_f.text_field :name, label: "Group of fields" } %>
+				<%= bootstrap_col(col: 3) { user_f.text_field :name, label: "Different sizes" } %>
+				<%= bootstrap_col(col: 6) { user_f.text_field :name, label: "More than one field in row" } %>
+			<% end %>
+		<% end %>
+		
+		<h3><br>Inline form</h3>
+		<%= bootstrap_form_for @user, layout: :inline do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :name, label: "With my label text" %>
+		<% end %>
+		
+		<h3><br>Horizontal form</h3>
+		<%= bootstrap_form_for @user, layout: :horizontal, label_col: 4, control_col: 8 do |user_f| %>
+			<%= user_f.text_field :name %>
+			<%= user_f.text_field :name, label: "With my label text" %>
+			<%= user_f.text_field :name, label: "With invisible label", invisible_label: true %>
+			<%= user_f.text_field :name, label: "Control size", size: "lg" %>
+			
+			<%= user_f.text_field :name, label: "With md grid system", grid_system: "md" %>
+			<%= user_f.form_group(col_block_disabled: true) do %>
+				<%= user_f.text_field :name, label: "Group of fields", form_group_disabled: true, control_col: 3 %>
+				<%= user_f.text_field :name, form_group_disabled: true, control_col: 3, label_disabled: true %>
+				<%= user_f.select(:id, User.all.collect { |u| [u.name, u.id] }, { include_blank: "None" }, { form_group_disabled: true, control_col: 2, label_disabled: true }) %>
+			<% end %>
+		<% end %>
+	</div>
+</div>

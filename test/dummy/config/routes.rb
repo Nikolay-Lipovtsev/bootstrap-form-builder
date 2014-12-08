@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
+  root 'users#test'
   resources :users
+  get '/test_helper', to: 'users#test_helper'
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

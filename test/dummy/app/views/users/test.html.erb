@@ -1,0 +1,599 @@
+<div class="row">
+	<div class="col-md-6">
+		<h1>Bootstrap buttons</h1>
+		<p>With Bootstrap form builder</p>
+
+		<h2><br>Styles</h2>
+		<hr>
+		<%= button_tag "Default" %>
+		<%= button_tag "Primary", style: "primary" %>
+		<%= button_tag "Success", style: "success" %>
+		<%= button_tag "Info", style: "info" %>
+		<%= button_tag "Warning", style: "warning" %>
+		<%= button_tag "Danger", style: "danger" %>
+		<%= button_tag "Link", style: "link" %>
+		
+		<h2><br>Sizes</h2>
+		<hr>
+		<p>
+			<%= button_tag "Large button", style: "primary", size: "lg" %>
+			<%= button_tag "Large button", size: "lg" %>
+		</p>
+		<p>
+			<%= button_tag "Default button", style: "primary" %>
+			<%= button_tag "Default button" %>
+		</p>
+		<p>
+			<%= button_tag "Small button", style: "primary", size: "sm" %>
+			<%= button_tag "Small button", size: "sm" %>
+		</p>
+		<p>
+			<%= button_tag "Extra small button", style: "primary", size: "xs" %>
+			<%= button_tag "Extra small button", size: "xs" %>
+		</p>
+		<p>
+			<%= button_tag "Block level button", style: "primary", col: 12, size: "lg" %>
+		<p>
+		</p>
+			<%= button_tag "Block level button", col: 12, size: "lg" %>
+		</p>
+		
+		<h2><br>Active state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<%= button_tag "Primary button", style: "primary", active: true %>
+		<%= button_tag "Button", active: true %>
+	
+		<h3>Anchor element</h3>
+		<%= button_link_tag "Primary link", new_user_path, style: "primary", active: true %>
+		<%= button_link_tag "Link", new_user_path, active: true %>
+	
+		<h3>Submit element</h3>
+		<%= submit_tag "Primary submit", style: "primary", active: true %>
+		<%= submit_tag "Submit", active: true %>
+		
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<%= button_tag "Primary button", style: "primary", disabled: true %>
+		<%= button_tag "Button", disabled: true %>
+	
+		<h3>Anchor element</h3>
+		<%= button_link_tag "Primary link", new_user_path, style: "primary", disabled: true %>
+		<%= button_link_tag "Link", new_user_path, disabled: true %>
+	
+		<h3>Submit element</h3>
+		<%= submit_tag "Primary submit", style: "primary", disabled: true %>
+		<%= submit_tag "Submit", disabled: true %>
+		
+		<h2><br>Button tags</h2>
+		<hr>
+		<%= button_link_tag "Link", new_user_path %>
+		<%= button_tag "Button" %>
+		<%= button_input_tag "Input" %>
+		<%= submit_tag "Submit" %>
+		
+		<h1><br><br>Bootstrap form</h1>
+		<p>With Bootstrap form builder</p>
+		<h2><br>Basic form</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.email_field :email, label: "Email" %>
+			<%= user_f.password_field :password, label: "Password" %>
+			<%= user_f.check_box :email, label: "Check box" %>
+			<%= user_f.submit "Submit" %>
+		<% end %>
+		
+		<h2><br>Inline form</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :inline do |user_f| %>
+			<%= user_f.email_field :name, label: "Enter email" %>
+			<%= user_f.email_field :name, label: "Enter email", input_group: { type: :left_char, value: "@" } %>
+			<%= user_f.password_field :name, label: "Password" %>
+			<%= user_f.check_box :name, label: "Check box" %>
+			<%= user_f.submit "Submit" %>
+		<% end %>
+		
+		<h2><br>Horizontal form</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
+			<%= user_f.email_field :name, label: "Email" %>
+			<%= user_f.password_field :name, label: "Password" %>
+			<%= user_f.check_box :name, label: "Check box" %>
+			<%= user_f.button "Submit" %>
+		<% end %>
+		
+		<h2><br>Supported controls</h2>
+		<hr>
+		<h3>Inputs</h3>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.color_field :name, label: "Color field" %>
+			<%= user_f.date_field :name, label: "Date field" %>
+			<%= user_f.datetime_field :name, label: "Date time field" %>
+			<%= user_f.datetime_local_field :name, label: "Date time local field" %>
+			<%= user_f.email_field :name, label: "Email field" %>
+			<%= user_f.month_field :name, label: "Month field" %>
+			<%= user_f.number_field :name, label: "Number field" %>
+			<%= user_f.password_field :name, label: "Password field" %>
+			<%= user_f.phone_field :name, label: "Phone field" %>
+			<%= user_f.range_field :name, label: "Range field" %>
+			<%= user_f.search_field :name, label: "Search field" %>
+			<%= user_f.telephone_field :name, label: "Telephone field" %>
+			<%= user_f.text_area :name, label: "Text area", rows: "3" %>
+			<%= user_f.text_field :name, label: "Text field" %>
+			<%= user_f.time_field :name, label: "Time field" %>
+			<%= user_f.url_field :name, label: "Url field" %>
+			<%= user_f.week_field :name, label: "Week field" %>
+		<% end %>
+		
+		<h3>Checkboxes and radios</h3>
+		<h4>Default (stacked)</h4>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.check_box :name, label: "Check box" %>
+			<%= user_f.check_box :name, label: "Check box", disabled: true %>
+			<%= user_f.radio_button :name, 0, label: "Radio button", checked: true %>
+			<%= user_f.radio_button :name, 1, label: "Radio button" %>
+			<%= user_f.radio_button :name, 2, label: "Radio button", disabled: true %>
+		<% end %>
+		
+		<h4>Inline checkboxes and radios</h4>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.check_box :name, label: "Check box", inline: true %>
+			<%= user_f.check_box :name, label: "Check box", inline: true %>
+			<%= user_f.radio_button :name, 0, label: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, 1, label: "Radio button", inline: true %>
+			<%= user_f.radio_button :name, 2, label: "Radio button", inline: true %>
+		<% end %>
+		
+		<h3>Selects</h3>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.select(:id, User.all.collect { |u| [ u.name, u.id ] }, {}, { include_blank: "None", invisible_label: true }) %>
+		<% end %>
+		
+		<h2><br>Static control</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" }, layout: :horizontal do |user_f| %>
+			<%= user_f.control_static :email, "email@example.com", label: "Email" %>
+			<%= user_f.password_field :password, label: "Password" %>
+		<% end %>
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Disabled input here...", invisible_label: true, disabled: true %>
+		<% end %>
+		
+		<h2><br>Readonly state</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Readonly input here...", invisible_label: true, disabled: true %>
+		<% end %>
+		
+		<h2><br>Validation states</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Input with success", style: "success" %>
+			<%= user_f.text_field :email, label: "Input with warning", style: "warning" %>
+			<%= user_f.text_field :email, label: "Input with error", style: "error" %>
+			<%= user_f.check_box :name, label: "Checkbox with success", style: "success" %>
+			<%= user_f.check_box :name, label: "Checkbox with warning", style: "warning" %>
+			<%= user_f.check_box :name, label: "Checkbox with error", style: "error" %>
+		<% end %>
+		
+		<h2><br>With optional icons</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: "Input with success", style: "success", icon: "ok" %>
+			<%= user_f.text_field :email, label: "Input with warning", style: "warning", icon: "warning-sign" %>
+			<%= user_f.text_field :email, label: "Input with error", style: "error", icon: "remove" %>
+		<% end %>
+		
+		<h2><br>Control sizing</h2>
+		<hr>
+		<%= bootstrap_form_for @user, url: { action: "create" } do |user_f| %>
+			<%= user_f.text_field :email, label: ".input-lg", invisible_label: true, size: "lg" %>
+			<%= user_f.text_field :email, label: "Default input", invisible_label: true %>
+			<%= user_f.text_field :email, label: ".input-sm", invisible_label: true, size: "sm" %>
+			<%= user_f.select(:id, User.all.collect { |u| [ u.name, u.id ] }, {}, { include_blank: "None", invisible_label: true, size: "lg" }) %>
+			<%= user_f.select(:id, User.all.collect { |u| [ u.name, u.id ] }, {}, { include_blank: "None", invisible_label: true }) %>
+			<%= user_f.select(:id, User.all.collect { |u| [ u.name, u.id ] }, {}, { include_blank: "None", invisible_label: true, size: "sm" }) %>
+		<% end %>
+	</div>
+	
+	<div class="col-md-6">
+		<h1>Bootstrap buttons</h1>
+		<p>Without Bootstrap form builder (normal Bootstrap form with HTML ERB)</p>
+		
+		<h2><br>Styles</h2>
+		<hr>
+		<button type="button" class="btn btn-default">Default</button>
+		<button type="button" class="btn btn-primary">Primary</button>
+		<button type="button" class="btn btn-success">Success</button>
+		<button type="button" class="btn btn-info">Info</button>
+		<button type="button" class="btn btn-warning">Warning</button>
+		<button type="button" class="btn btn-danger">Danger</button>
+		<button type="button" class="btn btn-link">Link</button>
+		
+		<h2><br>Sizes</h2>
+		<hr>
+		<p>
+		  <button type="button" class="btn btn-primary btn-lg">Large button</button>
+		  <button type="button" class="btn btn-default btn-lg">Large button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary">Default button</button>
+		  <button type="button" class="btn btn-default">Default button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary btn-sm">Small button</button>
+		  <button type="button" class="btn btn-default btn-sm">Small button</button>
+		</p>
+		<p>
+		  <button type="button" class="btn btn-primary btn-xs">Extra small button</button>
+		  <button type="button" class="btn btn-default btn-xs">Extra small button</button>
+		</p>
+		<p>
+			<button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
+		</p>
+		<p>
+			<button type="button" class="btn btn-default btn-lg btn-block">Block level button</button>
+		</p>
+		
+		<h2><br>Active state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<button type="button" class="btn btn-primary active">Primary button</button>
+		<button type="button" class="btn btn-default active">Button</button>
+		
+		<h3>Anchor element</h3>
+		<a href="#" class="btn btn-primary active" role="button">Primary link</a>
+		<a href="#" class="btn btn-default active" role="button">Link</a>
+		
+		<h3>Submit element</h3>
+		<input class="btn btn-primary active" name="commit" type="submit" value="Primary submit">
+		<input class="btn btn-default active" name="commit" type="submit" value="Submit">
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<h3>Button element</h3>
+		<button type="button" class="btn btn-primary" disabled="disabled">Primary button</button>
+		<button type="button" class="btn btn-default" disabled="disabled">Button</button>
+		
+		<h3>Anchor element</h3>
+		<a href="#" class="btn btn-primary disabled" disabled="disabled" role="button">Primary link</a>
+		<a href="#" class="btn btn-default disabled" disabled="disabled" role="button">Link</a>
+		
+		<h3>Submit element</h3>
+		<input class="btn btn-primary" disabled="disabled" name="commit" type="submit" value="Primary submit">
+		<input class="btn btn-default" disabled="disabled" name="commit" type="submit" value="Submit">
+		
+		<h2><br>Button tags</h2>
+		<hr>
+		<a class="btn btn-default" href="#" role="button">Link</a>
+		<button class="btn btn-default" type="submit">Button</button>
+		<input class="btn btn-default" type="button" value="Input">
+		<input class="btn btn-default" type="submit" value="Submit">
+		
+		<h1><br><br>Bootstrap form</h1>
+		<p>Without Bootstrap form builder (normal Bootstrap form with HTML ERB)</p>
+		
+		<h2><br>Basic form</h2>
+		<hr>
+		<form role="form">
+		  <div class="form-group">
+		    <label for="exampleInputEmail1">Email</label>
+		    <input type="email" class="form-control" id="exampleInputEmail1">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPassword1">Password</label>
+		    <input type="password" class="form-control" id="exampleInputPassword1">
+		  </div>
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox"> Check box
+		    </label>
+		  </div>
+		  <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+		
+		<h2><br>Inline form</h2>
+		<hr>
+		<form class="form-inline" role="form">
+		  <div class="form-group">
+		    <label class="sr-only" for="exampleInputEmail2">Email address</label>
+		    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+		  </div>
+		  <div class="form-group">
+		    <div class="input-group">
+		      <div class="input-group-addon">@</div>
+		      <input class="form-control" type="email" placeholder="Enter email">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="sr-only" for="exampleInputPassword2">Password</label>
+		    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+		  </div>
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox"> Check box
+		    </label>
+		  </div>
+		  <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+		
+		<h2><br>Horizontal form</h2>
+		<hr>
+		<form class="form-horizontal" role="form">
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+		    <div class="col-sm-10">
+		      <input type="email" class="form-control" id="inputEmail3">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-10">
+		      <input type="password" class="form-control" id="inputPassword3">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <div class="checkbox">
+		        <label>
+		          <input type="checkbox"> Check box
+		        </label>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default">Submit</button>
+		    </div>
+		  </div>
+		</form>
+		
+		<h2><br>Supported controls</h2>
+		<hr>
+		<h3>Inputs</h3>
+		<form role="form">
+		  <div class="form-group">
+		    <label for="exampleInputColor">Color field</label>
+		    <input type="color" class="form-control" id="exampleInputColor">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputDate">Date field</label>
+		    <input type="date" class="form-control" id="exampleInputDate">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputDateTime">Date time field</label>
+		    <input type="datetime" class="form-control" id="exampleInputDateTime">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputDateTimeLocal">Date time local field</label>
+		    <input type="datetime-local" class="form-control" id="exampleInputDateTimeLocal">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputEmail">Email field</label>
+		    <input type="email" class="form-control" id="exampleInputEmail">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputMonth">Month field</label>
+		    <input type="month" class="form-control" id="exampleInputMonth">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputNumber">Number field</label>
+		    <input type="number" class="form-control" id="exampleInputNumber">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPassword">Password field</label>
+		    <input type="password" class="form-control" id="exampleInputPassword">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPhone">Phone field</label>
+		    <input type="tel" class="form-control" id="exampleInputPhone">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputRange">Range field</label>
+		    <input type="range" class="form-control" id="exampleInputRange">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputSearch">Search field</label>
+		    <input type="search" class="form-control" id="exampleInputSearch">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputTelephone">Telephone field</label>
+		    <input type="tel" class="form-control" id="exampleInputTelephone">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputTextArea">Text area</label>
+		    <textarea class="form-control" id="exampleInputTextArea" rows="3"></textarea>
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputText">Text field</label>
+		    <input type="text" class="form-control" id="exampleInputText">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputTime">Time field</label>
+		    <input type="time" class="form-control" id="exampleInputTime">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputUrl">Url field</label>
+		    <input type="url" class="form-control" id="exampleInputUrl">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputWeek">Week field</label>
+		    <input type="week" class="form-control" id="exampleInputWeek">
+		  </div>
+		  
+		</form>
+		
+		<h3>Checkboxes and radios</h3>
+		<h4>Default (stacked)</h4>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" value="">
+		    Check box
+		  </label>
+		</div>
+		<div class="checkbox disabled">
+		  <label>
+		    <input type="checkbox" value="" disabled>
+		    Check box
+		  </label>
+		</div>
+
+		<div class="radio">
+		  <label>
+		    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+		    Radio button
+		  </label>
+		</div>
+		<div class="radio">
+		  <label>
+		    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+		    Radio button
+		  </label>
+		</div>
+		<div class="radio disabled">
+		  <label>
+		    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+		    Radio button
+		  </label>
+		</div>
+		
+		<h4>Inline checkboxes and radios</h4>
+		<label class="checkbox-inline">
+		  <input type="checkbox" id="inlineCheckbox1" value="option1"> Check box
+		</label>
+		<label class="checkbox-inline">
+		  <input type="checkbox" id="inlineCheckbox2" value="option2"> Check box
+		</label>
+
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Radio button
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Radio button
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Radio button
+		</label>
+		
+		<h3>Selects</h3>
+		<select class="form-control">
+		  <option>1</option>
+		  <option>2</option>
+		  <option>3</option>
+		  <option>4</option>
+		  <option>5</option>
+		</select>
+		
+		<h2><br>Static control</h2>
+		<hr>
+		<form class="form-horizontal" role="form">
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">Email</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static">email@example.com</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-10">
+		      <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+		    </div>
+		  </div>
+		</form>
+		
+		<h2><br>Disabled state</h2>
+		<hr>
+		<input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+		
+		<h2><br>Readonly state</h2>
+		<hr>
+		<input class="form-control" type="text" placeholder="Readonly input here..." readonly>
+		
+		<h2><br>Validation states</h2>
+		<hr>
+		<div class="form-group has-success">
+		  <label class="control-label" for="inputSuccess1">Input with success</label>
+		  <input type="text" class="form-control" id="inputSuccess1">
+		</div>
+		<div class="form-group has-warning">
+		  <label class="control-label" for="inputWarning1">Input with warning</label>
+		  <input type="text" class="form-control" id="inputWarning1">
+		</div>
+		<div class="form-group has-error">
+		  <label class="control-label" for="inputError1">Input with error</label>
+		  <input type="text" class="form-control" id="inputError1">
+		</div>
+		<div class="has-success">
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox" id="checkboxSuccess" value="option1">
+		      Checkbox with success
+		    </label>
+		  </div>
+		</div>
+		<div class="has-warning">
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox" id="checkboxWarning" value="option1">
+		      Checkbox with warning
+		    </label>
+		  </div>
+		</div>
+		<div class="has-error">
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox" id="checkboxError" value="option1">
+		      Checkbox with error
+		    </label>
+		  </div>
+		</div>
+		
+		<h2><br>With optional icons</h2>
+		<hr>
+		<div class="form-group has-success has-feedback">
+		  <label class="control-label" for="inputSuccess2">Input with success</label>
+		  <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
+		  <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		  <span id="inputSuccess2Status" class="sr-only">(success)</span>
+		</div>
+		<div class="form-group has-warning has-feedback">
+		  <label class="control-label" for="inputWarning2">Input with warning</label>
+		  <input type="text" class="form-control" id="inputWarning2" aria-describedby="inputWarning2Status">
+		  <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>
+		  <span id="inputWarning2Status" class="sr-only">(warning)</span>
+		</div>
+		<div class="form-group has-error has-feedback">
+		  <label class="control-label" for="inputError2">Input with error</label>
+		  <input type="text" class="form-control" id="inputError2" aria-describedby="inputError2Status">
+		  <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+		  <span id="inputError2Status" class="sr-only">(error)</span>
+		</div>
+		
+		<h2><br>Control sizing</h2>
+		<hr>
+		<div class="form-group">
+			<input class="form-control input-lg" type="text" placeholder=".input-lg">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" placeholder="Default input">
+		</div>
+		<div class="form-group">
+			<input class="form-control input-sm" type="text" placeholder=".input-sm">
+		</div>
+		
+		<div class="form-group">
+			<select class="form-control input-lg">...</select>
+		</div>
+		<div class="form-group">
+			<select class="form-control">...</select>
+		</div>
+		<div class="form-group">
+			<select class="form-control input-sm">...</select>
+		</div>
+	</div>
+</div>
