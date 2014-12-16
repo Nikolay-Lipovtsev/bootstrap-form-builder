@@ -393,16 +393,13 @@ module BootstrapFormBuilder
       end
 
       def input_group_for_base_controls(options = {})
-        if options[:input_group]
-          position, type, value, size = options[:input_group][:type].to_s.sub(/_\w+/, ""), options[:input_group][:type].to_s.sub(/\w+_/, ""), options[:input_group][:value], options[:input_group][:size]
-          size = "input-group-#{size}" if size
-          content_tag(:div, class: ["input-group", size].compact.join(" ")) do
-            spen_left = input_group_spen(type, value) if position == "left"
-            spen_right = input_group_spen(type, value) if position == "right"
-            [spen_left, yield, spen_right].join.html_safe
-          end
-        else
-          yield
+        return yield unless options[:input_group]
+        position, type, value, size = options[:input_group][:type].to_s.sub(/_\w+/, ""), options[:input_group][:type].to_s.sub(/\w+_/, ""), options[:input_group][:value], options[:input_group][:size]
+        size = "input-group-#{size}" if size
+        content_tag(:div, class: ["input-group", size].compact.join(" ")) do
+          spen_left = input_group_spen(type, value) if position == "left"
+          spen_right = input_group_spen(type, value) if position == "right"
+          [spen_left, yield, spen_right].join.html_safe
         end
       end
     

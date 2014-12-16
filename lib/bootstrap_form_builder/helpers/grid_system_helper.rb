@@ -22,8 +22,12 @@ module BootstrapFormBuilder
       # # => Test
 		  #
       def bootstrap_row(options = {})
-        options[:class] = ["row", options[:class]].compact.join(" ")
-        options[:row_disabled] ? yield : content_tag(:div, class: options[:class]) { yield }
+        if options[:row_disabled]
+          yield
+        else
+          options[:class] = ["row", options[:class]].compact.join(" ")
+          content_tag(:div, class: options[:class]) { yield }
+        end
       end
       
       alias :control_group :bootstrap_row
@@ -53,10 +57,15 @@ module BootstrapFormBuilder
       # # => <div class="col-lg-6">Test</div>
       #
       def bootstrap_col(options = {})
-        options[:class] = [grid_system_class(options[:col], options[:grid_system]), 
-                          grid_system_offset_class(options[:offset_col], options[:grid_system]), 
-                          options[:class]].compact.join(" ")
-        content_tag(:div, class: options[:class]) { yield }
+        if options[:col] || options[:offset_col]
+          options[:class] = [grid_system_class(options[:col], options[:grid_system]), 
+                            grid_system_offset_class(options[:offset_col], options[:grid_system]), 
+                            options[:class]].compact.join(" ")
+          
+          content_tag(:div, class: options[:class]) { yield }
+        else
+          yield
+        end
       end
       
       # Creates a HTML div block with bootstrap row class and HTML div block with bootstrap grid column class inside.

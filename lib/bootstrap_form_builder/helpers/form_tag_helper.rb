@@ -3,7 +3,7 @@ module BootstrapFormBuilder
     # Provides a number of methods for creating a simple button with Bootstrap style
     module FormTagHelper
       
-      # Creates a buttot tag with bootstrap class.
+      # Creates a button tag with bootstrap class.
       #
       # === Options
       # You can use only symbols for the attribute names.
@@ -72,20 +72,13 @@ module BootstrapFormBuilder
       #      </div>
       #      
       def button_tag(content_or_options = nil, options = nil, &block)
-        if content_or_options.is_a? Hash
-          options = content_or_options
-        else
-          options ||= {}
-        end
+        content_or_options, options = yield, content_or_options if block_given?
+        options ||= {}
         
         button_block(options) do
           options = base_button_class options
           options = { name: "button", type: "submit" }.merge!(options.symbolize_keys)
-          if block_given?
-            content_tag :button, options, &block
-          else
-            content_tag :button, content_or_options || "Button", options
-          end
+          content_tag :button, content_or_options || "Button", options
         end
       end
       
@@ -316,7 +309,7 @@ module BootstrapFormBuilder
       private
       
       def button_block(options = {})
-        if [:col, :offset_col].any? {|k| options.key?(k)}
+        if [:col, :offset_col].any? { |k| options.key?(k) }
           bootstrap_row_with_col(options.slice(:col, :grid_system, :offset_col, :row_disabled)) { yield }
         else 
           yield
@@ -329,7 +322,7 @@ module BootstrapFormBuilder
         options[:active] = "active" if options[:active]
         options[:class] = ["btn", options[:style],  options[:size], options[:class], options[:active]].compact.join(" ")
         options[:class] = [options[:class], "btn-block"].compact.join(" ") if options[:col]
-        options.delete_if{ |k, v| [:active, :col, :grid_system, :offset_col, :row_disabled, :size, :style].include? k }
+        options.delete_if { |k, v| [:active, :col, :grid_system, :offset_col, :row_disabled, :size, :style].include? k }
       end
     end
   end
